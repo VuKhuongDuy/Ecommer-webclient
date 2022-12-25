@@ -33,11 +33,11 @@ const HeroSliderSix = ({ heroSliderData }) => {
       <div className="hero-slider__wrapper">
         <Swiper {...params}>
           {heroSliderData &&
-            heroSliderData.map((single, key) => {
+            heroSliderData.map((element, key) => {
               return (
                 <div
                   className="hero-slider__slide bg-image"
-                  style={{ backgroundImage: `url(${single.backgroundImage})` }}
+                  style={{ backgroundImage: `url(${element.image})` }}
                   key={key}
                 >
                   <div className="hero-slider__content-wrapper">
@@ -46,14 +46,14 @@ const HeroSliderSix = ({ heroSliderData }) => {
                         <Col lg={6}>
                           <div className="hero-slider__content overflow-hidden">
                             <h5 className="mb-3 font-weight-light sub-title">
-                              {single.subtitle}
+                              {element.title2}
                             </h5>
                             <h2 className="space-mb--20 title">
-                              {single.title}
+                              {element.title}
                             </h2>
-                            <Link href={single.url}>
+                            <Link href={element.redirect_url}>
                               <a className="btn btn-fill-out rounded-0 text-uppercase slider-link">
-                                Shop Now
+                                Buy Now
                               </a>
                             </Link>
                           </div>

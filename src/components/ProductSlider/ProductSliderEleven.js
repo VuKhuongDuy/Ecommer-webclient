@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { IoIosFlash } from "react-icons/io";
 import { Container, Row, Col } from "react-bootstrap";
 import Swiper from "react-id-swiper";
 import { ProductGridWrapperFive } from "../ProductThumb";

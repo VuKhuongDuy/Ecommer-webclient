@@ -13,7 +13,7 @@ import MobileCategoryMenuTwo from "./elements/MobileCategoryMenuTwo";
 import MiniCart from "./elements/MiniCart";
 import CategoryMenuThree from "./elements/CategoryMenuThree";
 
-const HeaderSix = ({ cartItems, wishlistItems, navPositionClass }) => {
+const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) => {
   const [scroll, setScroll] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [offCanvasMobileMenuActive, setOffCanvasMobileMenuActive] = useState(
@@ -44,7 +44,7 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass }) => {
       }`}
     >
       {/* header top */}
-      <HeaderTopThree containerClass="container" />
+      {/* <HeaderTopThree containerClass="container" /> */}
 
       {/* middle header */}
       <div className="middle-header dark-skin space-pt--20 space-pb--20">
@@ -68,7 +68,7 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass }) => {
             <div className="product-search-form product-search-form--style-three d-none d-lg-block">
               <form>
                 <div className="input-group">
-                  <div className="input-group-prepend">
+                  {/* <div className="input-group-prepend">
                     <div className="custom-select-wrapper">
                       <select className="first-null">
                         <option value>All Category</option>
@@ -79,7 +79,7 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass }) => {
                         <option value="Jeans">Jeans</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
                   <input
                     className="form-control"
                     placeholder="Search Product..."
@@ -122,7 +122,7 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass }) => {
             <Col lg={9} xs={6}>
               <div className="d-flex align-items-center justify-content-end">
                 {/* navigation */}
-                <Navigation positionClass={navPositionClass} />
+                <Navigation positionClass={navPositionClass} categories={categories}/>
                 {/* icons */}
                 <ul className="header-icons d-flex justify-content-end">
                   <li>

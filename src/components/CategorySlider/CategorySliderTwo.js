@@ -45,10 +45,10 @@ const CategorySliderTwo = ({ categorySliderData }) => {
                   return (
                     <div className="item" key={key}>
                       <div className="categories-box categories-box--style-two">
-                        <Link href={single.url}>
+                        <Link href={`category/${single.slug}`}>
                           <a>
                             <img src={single.image} alt="" />
-                            <span>{single.title}</span>
+                            <span>{single.name}</span>
                           </a>
                         </Link>
                       </div>

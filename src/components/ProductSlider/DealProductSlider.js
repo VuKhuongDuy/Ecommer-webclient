@@ -8,7 +8,7 @@ import RendererTwo from "../../components/Countdown/RendererTwo";
 
 const DealProductSlider = ({ title, products }) => {
   const [swiper, setSwiper] = useState(null);
-
+console.log({products})
   const goNext = () => {
     if (swiper !== null) {
       swiper.slideNext();
@@ -71,11 +71,8 @@ const DealProductSlider = ({ title, products }) => {
               <Swiper {...params} getSwiper={setSwiper}>
                 {products &&
                   products.map((product, key) => {
-                    const discountedPrice = getDiscountPrice(
-                      product.price,
-                      product.discount
-                    ).toFixed(2);
-                    const productPrice = product.price.toFixed(2);
+                    const discountedPrice = product.selling_price.toFixed(2);
+                    const productPrice = product.default_price.toFixed(2);
                     return (
                       <div className="deal-product" key={key}>
                         <div className="deal-product__image">

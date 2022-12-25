@@ -10,43 +10,50 @@ import {
   ProductSliderNine,
   DealProductSlider
 } from "../../components/ProductSlider";
+import { categoryService, productService } from "../../api-services";
 
 import heroSliderFiveData from "../../data/hero-sliders/hero-slider-five.json";
 import brandLogoData from "../../data/brand-logo/brand-logo-one.json";
 
 const ElectronicsOne = ({
-  featuredProducts,
-  featuredProductsTwo,
-  bestSellerProducts,
-  bestSellerProductsTwo,
-  trendingProducts,
-  saleProducts,
-  saleProductsTwo,
+  categories,
   newProducts,
-  dealProducts
+  featuredProducts,
+  bestSellerProducts,
+  flashSaleProducts,
+  dealOfTheDayProducts,
+  carouselProducts
 }) => {
+  console.log({categories})
+  console.log({newProducts})
+  console.log({featuredProducts})
+  console.log({bestSellerProducts})
+  console.log({flashSaleProducts})
+  console.log({dealOfTheDayProducts})
+  console.log({carouselProducts})
+
   return (
     <LayoutFive navPositionClass="justify-content-start">
       {/* hero slider */}
-      <HeroSliderFive heroSliderData={heroSliderFiveData} />
+      <HeroSliderFive carouselProducts={carouselProducts} />
       {/* tab product */}
       <ProductTabThree
         title="Exclusive Products"
         bannerImage="/assets/images/banner/shop_banner_img6.jpg"
         newProducts={newProducts}
-        bestSellerProducts={bestSellerProductsTwo}
-        featuredProducts={featuredProductsTwo}
-        saleProducts={saleProductsTwo}
+        bestSellerProducts={bestSellerProducts}
+        featuredProducts={featuredProducts}
+        saleProducts={flashSaleProducts}
       />
       {/* banner */}
       <BannerFive containerClass="custom-container" />
       {/* deal products */}
-      <DealProductSlider title="Deal Of The Day" products={dealProducts} />
+      <DealProductSlider title="Deal Of The Day" products={dealOfTheDayProducts} />
       {/* product slider */}
       <ProductSliderNine
         title="Trending Products"
         bannerImage="/assets/images/banner/shop_banner_img10.jpg"
-        products={trendingProducts}
+        products={bestSellerProducts}
       />
       {/* brand logo */}
       <BrandLogoThree title="Our Brands" brandLogoData={brandLogoData} />
@@ -57,25 +64,34 @@ const ElectronicsOne = ({
         saleTitle="Sale Products"
         featuredProducts={featuredProducts}
         bestSellerProducts={bestSellerProducts}
-        saleProducts={saleProducts}
+        saleProducts={bestSellerProducts}
       />
     </LayoutFive>
   );
 };
 
-const mapStateToProps = (state) => {
-  const products = state.productData;
-  return {
-    featuredProducts: getProducts(products, "electronics", "featured", 8),
-    featuredProductsTwo: getProducts(products, "electronics", "featured", 8),
-    newProducts: getProducts(products, "electronics", "new", 8),
-    bestSellerProducts: getProducts(products, "electronics", "popular", 10),
-    bestSellerProductsTwo: getProducts(products, "electronics", "popular", 10),
-    trendingProducts: getProducts(products, "electronics", "popular", 10),
-    saleProducts: getProducts(products, "electronics", "sale", 8),
-    saleProductsTwo: getProducts(products, "electronics", "sale", 8),
-    dealProducts: getProducts(products, "electronics", "deal", 8)
-  };
-};
 
-export default connect(mapStateToProps)(ElectronicsOne);
+export async function getServerSideProps() {
+  console.log("Get server side")
+  const categoriesData = await categoryService.get();
+  // const productsData = await productService.get();
+  const newProductsData = await productService.getNew();
+  const featuredProducts = await productService.getFeatured();
+  const bestSellerProducts = await productService.getBestSeller();
+  const flashSaleProducts = await productService.getFlashSale();
+  const dealOfTheDayProducts = await productService.getDealOfTheDay();
+  const carouselProducts = await productService.getCarousel();
+  return {
+    props: {
+      categories: categoriesData.data || [],
+      newProductsData: newProductsData.data || [],
+      featuredProducts: featuredProducts.data || [],
+      bestSellerProducts: bestSellerProducts.data || [],
+      flashSaleProducts: flashSaleProducts.data || [],
+      dealOfTheDayProducts: dealOfTheDayProducts.data || [],
+      carouselProducts: carouselProducts.data || []
+    },
+  }
+}
+
+export default ElectronicsOne;

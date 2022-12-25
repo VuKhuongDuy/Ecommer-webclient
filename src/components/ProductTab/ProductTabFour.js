@@ -8,7 +8,6 @@ const ProductTabFour = ({
   newProducts,
   bestSellerProducts,
   featuredProducts,
-  saleProducts
 }) => {
   return (
     <div className="product-tab-area space-pb--r70">
@@ -27,16 +26,13 @@ const ProductTabFour = ({
             className="product-tab-navigation text-center justify-content-center space-mb--30"
           >
             <Nav.Item>
-              <Nav.Link eventKey="new">New Arrival</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
               <Nav.Link eventKey="bestSellers">Best Sellers</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="featured">Featured</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="sale">Special Offer</Nav.Link>
+              <Nav.Link eventKey="new">New</Nav.Link>
             </Nav.Item>
           </Nav>
           <Tab.Content>
@@ -58,13 +54,6 @@ const ProductTabFour = ({
               <Row>
                 <Col md={12}>
                   <ProductSliderTen products={featuredProducts} />
-                </Col>
-              </Row>
-            </Tab.Pane>
-            <Tab.Pane eventKey="sale">
-              <Row>
-                <Col md={12}>
-                  <ProductSliderTen products={saleProducts} />
                 </Col>
               </Row>
             </Tab.Pane>

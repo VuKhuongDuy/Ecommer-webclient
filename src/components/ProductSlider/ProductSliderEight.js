@@ -45,11 +45,12 @@ const ProductSliderEight = ({ title, products }) => {
           {chunkArr.map((chunk, key) => (
             <div className="product-chunk" key={key}>
               {chunk.map((product, key) => {
-                const discountedPrice = getDiscountPrice(
-                  product.price,
-                  product.discount
-                ).toFixed(2);
-                const productPrice = product.price.toFixed(2);
+                // const discountedPrice = getDiscountPrice(
+                  // product.price,
+                  // product.discount
+                // ).toFixed(2);
+                const discountedPrice = product.selling_price.toFixed(2);
+                const productPrice = product.default_price.toFixed(2);
                 return (
                   <div className="widget-product" key={key}>
                     <div className="widget-product__image">

@@ -1,21 +1,23 @@
 import Link from "next/link";
 import { Container, Row, Col } from "react-bootstrap";
 
-const BannerSix = () => {
+const BannerSix = ({ banner }) => {
   return (
     <div className="banner-area space-pb--r100">
       <Container>
         <Row>
           <Col lg={12}>
             <div className="sale-banner mb-0">
-              <Link href="/shop/grid-left-sidebar">
+              {
+                banner.map(element => <Link href={element.redirect_url} key={element.id}>
                 <a className="hover-effect">
                   <img
-                    src="/assets/images/banner/shop_banner_img11.png"
-                    alt="shop_banner_img11"
+                    src={element.image}
+                    alt="shop_banner"
                   />
                 </a>
-              </Link>
+              </Link>)
+              }
             </div>
           </Col>
         </Row>

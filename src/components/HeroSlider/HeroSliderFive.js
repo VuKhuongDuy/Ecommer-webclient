@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Swiper from "react-id-swiper";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-const HeroSliderFive = ({ heroSliderData }) => {
+const HeroSliderFive = ({ carouselProducts }) => {
   const params = {
     loop: true,
     speed: 1000,
@@ -39,26 +39,26 @@ const HeroSliderFive = ({ heroSliderData }) => {
           <Col xl={7} lg={9} className="offset-lg-3">
             <div className="hero-slider__wrapper hero-slider__wrapper--style-three mb-4 mb-xl-0">
               <Swiper {...params}>
-                {heroSliderData &&
-                  heroSliderData.map((single, key) => {
+                {carouselProducts &&
+                  carouselProducts.map((single, key) => {
                     return (
                       <div
                         className="hero-slider__slide bg-image"
-                        style={{
-                          backgroundImage: `url(${single.backgroundImage})`
-                        }}
+                        style={single.images.length > 0 ? {
+                          backgroundImage: `url(${single.images[0]})`
+                        } : {backgroundImage: `url('https://maytinhanphat.vn/img/image/tin/840/nhung-dieu-can-biet-khi-mua-may-tinh-de-ban-nguyen-bo-1.png')`}}
                         key={key}
                       >
                         <div className="hero-slider__content-wrapper hero-slider__content-wrapper--round-space">
                           <Col lg={8}>
                             <div className="hero-slider__content hero-slider__content--style-four overflow-hidden">
                               <h5 className="mb-3 font-weight-light sub-title">
-                                {single.subtitle}
+                                {single.title}
                               </h5>
                               <h2 className="space-mb--20 title">
-                                {single.title}
+                                {single.name}
                               </h2>
-                              <Link href={single.url}>
+                              <Link href={single.slug}>
                                 <a className="btn btn-fill-out btn-radius text-uppercase slider-link">
                                   Shop Now
                                 </a>

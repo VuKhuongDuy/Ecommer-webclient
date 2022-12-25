@@ -18,10 +18,9 @@ const ProductGridFive = ({
   deleteFromCompare,
   addToast,
   cartItems,
-  sliderClass
+  sliderClass,
 }) => {
   const [modalShow, setModalShow] = useState(false);
-  const [colorImage, setColorImage] = useState("");
 
   return (
     <Fragment>
@@ -33,19 +32,18 @@ const ProductGridFive = ({
         <div className="product-grid product-grid--style-three">
           <div className="product-grid__image">
             <Link
-              href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-              as={"/shop/product-basic/" + product.slug}
+              href={`/product/${product.slug}`}
+              as={"/product/" + product.slug}
             >
               <a>
-                <img
-                  src={colorImage ? colorImage : product.thumbImage[0]}
-                  alt="product_img1"
-                />
-                <img
-                  className="product-hover-image"
-                  src={colorImage ? colorImage : product.thumbImage[1]}
-                  alt="product_img1"
-                />
+                <img src={product.thumb_image[0].url} alt="product_img1" />
+                {product.thumb_image.length > 1 && (
+                  <img
+                    className="product-hover-image"
+                    src={colorImage ? colorImage : product.thumb_image[1].url}
+                    alt="product_img1"
+                  />
+                )}
               </a>
             </Link>
             <div className="product-grid__badge-wrapper">
