@@ -8,16 +8,14 @@ const BannerSix = ({ banner }) => {
         <Row>
           <Col lg={12}>
             <div className="sale-banner mb-0">
-              {
-                banner.map(element => <Link href={element.redirect_url} key={element.id}>
+              <Link href={banner.redirect_url} key={banner.id}>
                 <a className="hover-effect">
                   <img
-                    src={element.image}
+                    src={banner.image}
                     alt="shop_banner"
                   />
                 </a>
-              </Link>)
-              }
+              </Link>
             </div>
           </Col>
         </Row>

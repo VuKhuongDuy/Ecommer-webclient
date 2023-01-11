@@ -33,12 +33,12 @@ const ProductGridThree = ({
         <div className="product-grid product-grid--style-two">
           <div className="product-grid__image">
             <Link
-              href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-              as={"/shop/product-basic/" + product.slug}
+              href={`/product/[slug]?slug=${product.slug}`}
+              as={"/product/" + product.slug}
             >
               <a>
                 <img
-                  src={colorImage ? colorImage : product.thumbImage[0]}
+                  src={colorImage ? colorImage : product.thumb_image[0].url}
                   alt="product_img1"
                 />
               </a>
@@ -84,8 +84,8 @@ const ProductGridThree = ({
           <div className="product-grid__info text-center">
             <h6 className="product-title">
               <Link
-                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                as={"/shop/product-basic/" + product.slug}
+                href={`/product/[slug]?slug=${product.slug}`}
+                as={"/product/" + product.slug}
               >
                 <a>{product.name}</a>
               </Link>
@@ -115,8 +115,8 @@ const ProductGridThree = ({
                 </a>
               ) : product.variation && product.variation.length >= 1 ? (
                 <Link
-                  href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                  as={"/shop/product-basic/" + product.slug}
+                  href={`/product/[slug]?slug=${product.slug}`}
+                  as={"/product/" + product.slug}
                 >
                   <a className="btn btn-fill-out btn-radius">
                     <i className="icon-wrench" /> Select Options

@@ -6,7 +6,7 @@ const Navigation = ({ positionClass, categories = [] }) => {
     const render = <ul className="sub-menu--mega__list">
     {
       categories.map(ct => {
-        return <li key={ct._id}>
+        return <li key={ct.id}>
           <Link href={`/category/${encodeURIComponent(ct.slug)}`}>
             <a>{ct.name}</a>
           </Link>

@@ -7,6 +7,7 @@ const ImageGalleryLeftThumb = ({ product }) => {
   const [gallerySwiper, getGallerySwiper] = useState(null);
   const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
 
+  console.log(product.images);
   // effect for swiper slider synchronize
   useEffect(() => {
     if (
@@ -26,7 +27,7 @@ const ImageGalleryLeftThumb = ({ product }) => {
     spaceBetween: 10,
     loopedSlides: 4,
     loop: true,
-    effect: "fade"
+    effect: "creative"
   };
 
   const thumbnailSwiperParams = {
@@ -69,17 +70,17 @@ const ImageGalleryLeftThumb = ({ product }) => {
           <div className="product-large-image-wrapper">
             <LightgalleryProvider>
               <Swiper {...gallerySwiperParams}>
-                {product.image &&
-                  product.image.map((single, key) => {
+                {product.images &&
+                  product.images.map((single, key) => {
                     return (
                       <div key={key}>
-                        <LightgalleryItem group="any" src={single}>
+                        <LightgalleryItem group="any" src={single.url}>
                           <button className="enlarge-icon">
                             <i className="icon-magnifier-add" />
                           </button>
                         </LightgalleryItem>
                         <div className="single-image">
-                          <img src={single} className="img-fluid" alt="" />
+                          <img src={single.url} className="img-fluid" alt="" />
                         </div>
                       </div>
                     );
@@ -91,8 +92,8 @@ const ImageGalleryLeftThumb = ({ product }) => {
         <Col xl={2} className="order-2 order-xl-1">
           <div className="product-small-image-wrapper product-small-image-wrapper--side-thumb">
             <Swiper {...thumbnailSwiperParams}>
-              {product.image &&
-                product.image.map((image, i) => {
+              {product.images &&
+                product.images.map((image, i) => {
                   return (
                     <div key={i}>
                       <div className="single-image">

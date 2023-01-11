@@ -18,33 +18,22 @@ const ProductGridListWrapper = ({
   products,
   bottomSpace,
   addToCart,
-  addToWishlist,
-  deleteFromWishlist,
-  addToCompare,
-  deleteFromCompare,
   cartItems,
-  wishlistItems,
-  compareItems,
   sliderClass
 }) => {
   const { addToast } = useToasts();
   return (
     <Fragment>
       {products &&
+        products.length > 0 && 
         products.map((product) => {
           const discountedPrice = getDiscountPrice(
-            product.price,
+            product.selling_price,
             product.discount
           ).toFixed(2);
-          const productPrice = product.price.toFixed(2);
+          const productPrice = product.selling_price.toFixed(2);
           const cartItem = cartItems.filter(
             (cartItem) => cartItem.id === product.id
-          )[0];
-          const wishlistItem = wishlistItems.filter(
-            (wishlistItem) => wishlistItem.id === product.id
-          )[0];
-          const compareItem = compareItems.filter(
-            (compareItem) => compareItem.id === product.id
           )[0];
 
           return (
@@ -54,14 +43,8 @@ const ProductGridListWrapper = ({
               discountedPrice={discountedPrice}
               productPrice={productPrice}
               cartItem={cartItem}
-              wishlistItem={wishlistItem}
-              compareItem={compareItem}
               bottomSpace={bottomSpace}
               addToCart={addToCart}
-              addToWishlist={addToWishlist}
-              deleteFromWishlist={deleteFromWishlist}
-              addToCompare={addToCompare}
-              deleteFromCompare={deleteFromCompare}
               addToast={addToast}
               cartItems={cartItems}
               sliderClass={sliderClass}

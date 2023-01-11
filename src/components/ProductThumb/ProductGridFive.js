@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import Link from "next/link";
 import ProductModal from "./elements/ProductModal";
 import { ProductRating } from "../Product";
+import { getPercentDiscount } from "../../lib/product";
 
 const ProductGridFive = ({
   product,
@@ -68,8 +69,8 @@ const ProductGridFive = ({
                     </a>
                   ) : product.variation && product.variation.length >= 1 ? (
                     <Link
-                      href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                      as={"/shop/product-basic/" + product.slug}
+                      href={`/product/[slug]?slug=${product.slug}`}
+                      as={"/product/" + product.slug}
                     >
                       <a>
                         <i className="icon-wrench" />
@@ -130,8 +131,8 @@ const ProductGridFive = ({
           <div className="product-grid__info">
             <h6 className="product-title">
               <Link
-                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                as={"/shop/product-basic/" + product.slug}
+                href={`/product/[slug]?slug=${product.slug}`}
+                as={"/product/" + product.slug}
               >
                 <a>{product.name}</a>
               </Link>
@@ -141,7 +142,7 @@ const ProductGridFive = ({
                 <Fragment>
                   <span className="price">${discountedPrice}</span>
                   <del>${productPrice}</del>
-                  <span className="on-sale">{product.discount}% Off</span>
+                  <span className="on-sale">{getPercentDiscount(product)}% Off</span>
                 </Fragment>
               ) : (
                 <span className="price">${productPrice}</span>

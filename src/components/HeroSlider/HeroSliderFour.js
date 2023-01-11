@@ -12,7 +12,7 @@ const HeroSliderFour = ({ heroSliderData }) => {
       disableOnInteraction: false
     },
     watchSlidesVisibility: true,
-    effect: "fade",
+    effect: "creative",
 
     navigation: {
       nextEl: ".swiper-button-next",

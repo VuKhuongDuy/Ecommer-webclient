@@ -4,15 +4,14 @@ import Link from "next/link";
 import {
   getIndividualCategories,
   getIndividualTags,
-  getProducts,
   getDiscountPrice
 } from "../../lib/product";
 import { ProductRating } from "../../components/Product";
 
-const Sidebar = ({ products, category }) => {
+const Sidebar = ({ products, popularProducts }) => {
   const categories = getIndividualCategories(products);
   const tags = getIndividualTags(products);
-  const popularProducts = getProducts(products, category, "popular", 3);
+  // const popularProducts = getProducts(products, category, "popular", 3);
 
   return (
     <div className="sidebar">
@@ -47,27 +46,27 @@ const Sidebar = ({ products, category }) => {
             {popularProducts &&
               popularProducts.map((product, key) => {
                 const discountedPrice = getDiscountPrice(
-                  product.price,
+                  product.selling_price,
                   product.discount
                 ).toFixed(2);
-                const productPrice = product.price.toFixed(2);
+                const productPrice = product.selling_price.toFixed(2);
                 return (
                   <li className="widget-product-post" key={key}>
                     <div className="widget-product-post__image">
                       <Link
-                        href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                        as={"/shop/product-basic/" + product.slug}
+                        href={`/product/[slug]?slug=${product.slug}`}
+                        as={"/product/" + product.slug}
                       >
                         <a>
-                          <img src={product.thumbImage[0]} alt="shop_small1" />
+                          <img src={product.thumb_image[0].url} alt="shop_small1" />
                         </a>
                       </Link>
                     </div>
                     <div className="widget-product-post__content">
                       <h6 className="product-title">
                         <Link
-                          href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                          as={"/shop/product-basic/" + product.slug}
+                          href={`/product/[slug]?slug=${product.slug}`}
+                          as={"/product/" + product.slug}
                         >
                           <a>{product.name}</a>
                         </Link>

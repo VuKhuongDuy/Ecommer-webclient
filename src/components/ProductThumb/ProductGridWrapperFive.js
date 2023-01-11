@@ -18,13 +18,7 @@ const ProductGridWrapperFive = ({
   products,
   bottomSpace,
   addToCart,
-  addToWishlist,
-  deleteFromWishlist,
-  addToCompare,
-  deleteFromCompare,
   cartItems,
-  wishlistItems,
-  compareItems,
   sliderClass
 }) => {
   const { addToast } = useToasts();
@@ -37,12 +31,6 @@ const ProductGridWrapperFive = ({
           const cartItem = cartItems.filter(
             (cartItem) => cartItem.id === product.id
           )[0];
-          const wishlistItem = wishlistItems.filter(
-            (wishlistItem) => wishlistItem.id === product.id
-          )[0];
-          const compareItem = compareItems.filter(
-            (compareItem) => compareItem.id === product.id
-          )[0];
 
           return (
             <ProductGridFive
@@ -52,7 +40,7 @@ const ProductGridWrapperFive = ({
               productPrice={productPrice}
               cartItem={cartItem}
               // wishlistItem={wishlistItem}
-              compareItem={compareItem}
+              // compareItem={compareItem}
               // bottomSpace={bottomSpace}
               addToCart={addToCart}
               // addToWishlist={addToWishlist}

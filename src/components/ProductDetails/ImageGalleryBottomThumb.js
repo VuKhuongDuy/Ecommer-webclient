@@ -5,7 +5,7 @@ import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery";
 const ImageGalleryBottomThumb = ({ product }) => {
   const [gallerySwiper, getGallerySwiper] = useState(null);
   const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
-
+console.log({product})
   // effect for swiper slider synchronize
   useEffect(() => {
     if (
@@ -23,16 +23,16 @@ const ImageGalleryBottomThumb = ({ product }) => {
   const gallerySwiperParams = {
     getSwiper: getGallerySwiper,
     spaceBetween: 10,
-    loopedSlides: 4,
+    loopedSlides: 3,
     loop: true,
-    effect: "fade"
+    effect: "creative"
   };
 
   const thumbnailSwiperParams = {
     getSwiper: getThumbnailSwiper,
     spaceBetween: 10,
-    slidesPerView: 4,
-    loopedSlides: 4,
+    slidesPerView: product.images && product.images.length >= 2 ? product.images.length : 2,
+    loopedSlides: 3,
     touchRatio: 0.2,
     freeMode: true,
     loop: true,
@@ -44,17 +44,17 @@ const ImageGalleryBottomThumb = ({ product }) => {
       <div className="product-large-image-wrapper">
         <LightgalleryProvider>
           <Swiper {...gallerySwiperParams}>
-            {product.image &&
-              product.image.map((single, key) => {
+            {product.images &&
+              product.images.map((single, key) => {
                 return (
                   <div key={key}>
-                    <LightgalleryItem group="any" src={single}>
+                    <LightgalleryItem group="any" src={single.url}>
                       <button className="enlarge-icon">
                         <i className="icon-magnifier-add" />
                       </button>
                     </LightgalleryItem>
                     <div className="single-image">
-                      <img src={single} className="img-fluid" alt="" />
+                      <img src={single.url} className="img-fluid" alt="" />
                     </div>
                   </div>
                 );
@@ -64,12 +64,12 @@ const ImageGalleryBottomThumb = ({ product }) => {
       </div>
       <div className="product-small-image-wrapper">
         <Swiper {...thumbnailSwiperParams}>
-          {product.image &&
-            product.image.map((image, i) => {
+          {product.images &&
+            product.images.map((image, i) => {
               return (
                 <div key={i}>
                   <div className="single-image">
-                    <img src={image} className="img-fluid" alt="" />
+                    <img src={image.url} className="img-fluid" alt="" />
                   </div>
                 </div>
               );

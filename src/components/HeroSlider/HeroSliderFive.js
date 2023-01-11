@@ -12,7 +12,7 @@ const HeroSliderFive = ({ carouselProducts }) => {
       disableOnInteraction: false
     },
     watchSlidesVisibility: true,
-    effect: "fade",
+    effect: "creative",
     pagination: {
       el: ".swiper-pagination",
       clickable: true
@@ -45,7 +45,7 @@ const HeroSliderFive = ({ carouselProducts }) => {
                       <div
                         className="hero-slider__slide bg-image"
                         style={single.images.length > 0 ? {
-                          backgroundImage: `url(${single.images[0]})`
+                          backgroundImage: `url(${single.images[0].url})`
                         } : {backgroundImage: `url('https://maytinhanphat.vn/img/image/tin/840/nhung-dieu-can-biet-khi-mua-may-tinh-de-ban-nguyen-bo-1.png')`}}
                         key={key}
                       >

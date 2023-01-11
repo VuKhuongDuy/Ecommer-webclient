@@ -8,8 +8,7 @@ export const addToCart = (
   item,
   addToast,
   quantityCount,
-  selectedProductColor,
-  selectedProductSize
+  selectedProperties,
 ) => {
   return dispatch => {
     if (addToast) {
@@ -19,17 +18,8 @@ export const addToCart = (
       type: ADD_TO_CART,
       payload: {
         ...item,
-        quantity: quantityCount,
-        selectedProductColor: selectedProductColor
-          ? selectedProductColor
-          : item.selectedProductColor
-          ? item.selectedProductColor
-          : null,
-        selectedProductSize: selectedProductSize
-          ? selectedProductSize
-          : item.selectedProductSize
-          ? item.selectedProductSize
-          : null
+        cartQuantity: quantityCount,
+        selectedProperties: selectedProperties
       }
     });
   };
@@ -70,11 +60,11 @@ export const deleteAllFromCart = addToast => {
 
 // get stock of cart item
 export const cartItemStock = (item, color, size) => {
-  if (item.stock) {
-    return item.stock;
+  if (item.quantity) {
+    return item.quantity;
   } else {
-    return item.variation
+    return item.properties
       .filter(single => single.color === color)[0]
-      .size.filter(single => single.name === size)[0].stock;
+      .size.filter(single => single.name === size)[0].quantity;
   }
 };

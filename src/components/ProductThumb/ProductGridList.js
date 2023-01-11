@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Col } from "react-bootstrap";
 import ProductModal from "./elements/ProductModal";
 import { ProductRating } from "../Product";
+import { getPercentDiscount } from '../../lib/product';
 
 const ProductGridList = ({
   product,
@@ -10,7 +11,7 @@ const ProductGridList = ({
   productPrice,
   cartItem,
   wishlistItem,
-  compareItem,
+  // compareItem,
   bottomSpace,
   addToCart,
   addToWishlist,
@@ -36,12 +37,12 @@ const ProductGridList = ({
         <div className="product-grid">
           <div className="product-grid__image">
             <Link
-              href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-              as={"/shop/product-basic/" + product.slug}
+              href={`/product/[slug]?slug=${product.slug}`}
+              as={"/product/" + product.slug}
             >
               <a>
                 <img
-                  src={colorImage ? colorImage : product.thumbImage[0]}
+                  src={colorImage ? colorImage : product.thumb_image[0].url}
                   alt="product_img1"
                 />
               </a>
@@ -62,20 +63,20 @@ const ProductGridList = ({
             <div className="product-grid__action-box">
               <ul>
                 <li>
-                  {product.affiliateLink ? (
-                    <a href={product.affiliateLink} target="_blank">
+                  {product.slug ? (
+                    <a href={product.slug} target="_blank" rel="noreferrer">
                       <i className="icon-action-redo" />
                     </a>
-                  ) : product.variation && product.variation.length >= 1 ? (
+                  ) : product.properties && product.properties.length >= 1 ? (
                     <Link
-                      href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                      as={"/shop/product-basic/" + product.slug}
+                      href={`/product/[slug]?slug=${product.slug}`}
+                      as={"/product/" + product.slug}
                     >
                       <a>
                         <i className="icon-wrench" />
                       </a>
                     </Link>
-                  ) : product.stock && product.stock > 0 ? (
+                  ) : product.quantity > product.sale_count ? (
                     <button
                       onClick={() => addToCart(product, addToast)}
                       disabled={
@@ -92,7 +93,7 @@ const ProductGridList = ({
                     </button>
                   )}
                 </li>
-                <li>
+                {/* <li>
                   <button
                     onClick={
                       compareItem !== undefined
@@ -103,7 +104,7 @@ const ProductGridList = ({
                   >
                     <i className="icon-shuffle" />
                   </button>
-                </li>
+                </li> */}
                 <li>
                   <button
                     onClick={() => setModalShow(true)}
@@ -130,8 +131,8 @@ const ProductGridList = ({
           <div className="product-grid__info">
             <h6 className="product-title">
               <Link
-                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                as={"/shop/product-basic/" + product.slug}
+                href={`/product/[slug]?slug=${product.slug}`}
+                as={"/product/" + product.slug}
               >
                 <a>{product.name}</a>
               </Link>
@@ -141,16 +142,16 @@ const ProductGridList = ({
                 <Fragment>
                   <span className="price">${discountedPrice}</span>
                   <del>${productPrice}</del>
-                  <span className="on-sale">{product.discount}% Off</span>
+                  <span className="on-sale">{getPercentDiscount(product)}% Off</span>
                 </Fragment>
               ) : (
                 <span className="price">${productPrice}</span>
               )}
             </div>
-            <div className="rating-wrap">
+            {/* <div className="rating-wrap">
               <ProductRating ratingValue={product.rating} />
               <span className="rating-num">({product.ratingCount})</span>
-            </div>
+            </div> */}
 
             {product.variation ? (
               <div className="product-switch-wrap">
@@ -178,12 +179,12 @@ const ProductGridList = ({
         <div className="product-list">
           <div className="product-list__image">
             <Link
-              href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-              as={"/shop/product-basic/" + product.slug}
+              href={`/product/${product.slug}`}
+              as={"/product/" + product.slug}
             >
               <a>
                 <img
-                  src={colorImage ? colorImage : product.thumbImage[0]}
+                  src={colorImage ? colorImage : product.thumb_image[0].url}
                   alt="product_img1"
                 />
               </a>
@@ -205,8 +206,8 @@ const ProductGridList = ({
           <div className="product-list__info">
             <h6 className="product-title">
               <Link
-                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                as={"/shop/product-basic/" + product.slug}
+                href={`/product/${product.slug}`}
+                as={"/product/" + product.slug}
               >
                 <a>{product.name}</a>
               </Link>
@@ -217,16 +218,16 @@ const ProductGridList = ({
                   <Fragment>
                     <span className="price">${discountedPrice}</span>
                     <del>${productPrice}</del>
-                    <span className="on-sale">{product.discount}% Off</span>
+                    <span className="on-sale">{getPercentDiscount(product)}% Off</span>
                   </Fragment>
                 ) : (
                   <span className="price">${productPrice}</span>
                 )}
               </div>
-              <div className="rating-wrap">
+              {/* <div className="rating-wrap">
                 <ProductRating ratingValue={product.rating} />
                 <span className="rating-num">({product.ratingCount})</span>
-              </div>
+              </div> */}
             </div>
             <div className="product-description">
               {product.shortDescription}
@@ -255,24 +256,24 @@ const ProductGridList = ({
             <div className="product-list__actions">
               <ul>
                 <li>
-                  {product.affiliateLink ? (
+                  {product.slug ? (
                     <a
-                      href={product.affiliateLink}
+                      href={product.slug}
                       className="btn btn-fill-out btn-addtocart"
-                      target="_blank"
+                      target="_blank" rel="noreferrer"
                     >
                       <i className="icon-action-redo" /> Buy Now
                     </a>
-                  ) : product.variation && product.variation.length >= 1 ? (
+                  ) : product.properties && product.properties.length >= 1 ? (
                     <Link
-                      href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                      as={"/shop/product-basic/" + product.slug}
+                      href={`/product/[slug]?slug=${product.slug}`}
+                      as={"/product/" + product.slug}
                     >
                       <a className="btn btn-fill-out btn-addtocart">
                         <i className="icon-wrench" /> Select Options
                       </a>
                     </Link>
-                  ) : product.stock && product.stock > 0 ? (
+                  ) : product.quantity > product.sale_count ? (
                     <button
                       onClick={() => addToCart(product, addToast)}
                       disabled={
@@ -291,7 +292,7 @@ const ProductGridList = ({
                     </button>
                   )}
                 </li>
-                <li>
+                {/* <li>
                   <button
                     onClick={
                       compareItem !== undefined
@@ -302,7 +303,7 @@ const ProductGridList = ({
                   >
                     <i className="icon-shuffle" />
                   </button>
-                </li>
+                </li> */}
                 <li>
                   <button
                     onClick={() => setModalShow(true)}
@@ -338,7 +339,7 @@ const ProductGridList = ({
         cartitems={cartItems}
         cartitem={cartItem}
         wishlistitem={wishlistItem}
-        compareitem={compareItem}
+        // compareitem={compareItem}
         addtocart={addToCart}
         addtowishlist={addToWishlist}
         deletefromwishlist={deleteFromWishlist}

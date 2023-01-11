@@ -33,10 +33,10 @@ const ProductGridWrapperTwo = ({
       {products &&
         products.map((product) => {
           const discountedPrice = getDiscountPrice(
-            product.price,
+            product.selling_price,
             product.discount
           ).toFixed(2);
-          const productPrice = product.price.toFixed(2);
+          const productPrice = product.selling_price.toFixed(2);
           const cartItem = cartItems.filter(
             (cartItem) => cartItem.id === product.id
           )[0];

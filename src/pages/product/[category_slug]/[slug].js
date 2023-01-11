@@ -22,6 +22,7 @@ import {
 } from "../../../redux/actions/compareActions";
 import products from "../../../data/products.json";
 import { ProductSliderTwo } from "../../../components/ProductSlider";
+import { productService } from '../../../api-services';
 
 const ProductBasic = ({
   product,
@@ -117,10 +118,10 @@ const ProductBasic = ({
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const products = state.productData;
-  const category = ownProps.product.category[0];
+  // const products = state.productData;
+  // const category = ownProps.product.category[0];
   return {
-    relatedProducts: getProducts(products, category, "popular", 8),
+    // relatedProducts: getProducts(products, category, "popular", 8),
     cartItems: state.cartData,
     wishlistItems: state.wishlistData,
     compareItems: state.compareData
@@ -163,18 +164,32 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductBasic);
 
-export async function getStaticPaths() {
-  // get the paths we want to pre render based on products
-  const paths = products.map((product) => ({
-    params: { slug: product.slug }
-  }));
+// export async function getStaticPaths() {
+//   // get the paths we want to pre render based on products
+//   const paths = products.map((product) => ({
+//     params: { slug: product.slug }
+//   }));
 
-  return { paths, fallback: false };
-}
+//   return { paths, fallback: false };
+// }
 
-export async function getStaticProps({ params }) {
-  // get product data based on slug
-  const product = products.filter((single) => single.slug === params.slug)[0];
+// export async function getStaticProps({ params }) {
+//   // get product data based on slug
+//   const product = products.filter((single) => single.slug === params.slug)[0];
 
-  return { props: { product } };
+//   return { props: { product } };
+// }
+
+export async function getServerSideProps({query}) {
+  const {category_slug, slug} = query;
+  const product = await productService.getBySlug(`${category_slug}/${slug}`);
+  const relatedProducts = await productService.getRelatedProducts(product.data.category);
+  const popularProducts = await productService.getBestSeller();
+  return {
+    props: {
+      product: product.data || [],
+      relatedProducts: relatedProducts.data.data || [],
+      popularProducts: popularProducts.data || [],
+    },
+  };
 }

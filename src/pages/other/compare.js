@@ -41,7 +41,7 @@ const Compare = ({ cartItems, compareItems, addToCart, deleteFromCompare }) => {
                             return (
                               <td className="row_img" key={key}>
                                 <img
-                                  src={product.thumbImage[0]}
+                                  src={product.thumb_image[0].url}
                                   alt="compare-img"
                                 />
                               </td>
@@ -54,8 +54,8 @@ const Compare = ({ cartItems, compareItems, addToCart, deleteFromCompare }) => {
                             return (
                               <td className="product-name" key={key}>
                                 <Link
-                                  href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                                  as={`/shop/product-basic/${product.slug}`}
+                                  href={`/product/[slug]?slug=${product.slug}`}
+                                  as={`/product/${product.slug}`}
                                 >
                                   <a>{product.name}</a>
                                 </Link>
@@ -67,11 +67,11 @@ const Compare = ({ cartItems, compareItems, addToCart, deleteFromCompare }) => {
                           <td className="row-title">Price</td>
                           {compareItems.map((product, key) => {
                             const discountedPrice = getDiscountPrice(
-                              product.price,
+                              product.selling_price,
                               product.discount
                             ).toFixed(2);
 
-                            const productPrice = product.price.toFixed(2);
+                            const productPrice = product.selling_price.toFixed(2);
                             return (
                               <td className="product-price" key={key}>
                                 {product.discount ? (
@@ -123,8 +123,8 @@ const Compare = ({ cartItems, compareItems, addToCart, deleteFromCompare }) => {
                                 ) : product.variation &&
                                   product.variation.length >= 1 ? (
                                   <Link
-                                    href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                                    as={`/shop/product-basic/${product.slug}`}
+                                    href={`/product/[slug]?slug=${product.slug}`}
+                                    as={`/product/${product.slug}`}
                                   >
                                     <a className="btn btn-fill-out">
                                       Select option

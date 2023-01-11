@@ -25,7 +25,7 @@ const ProductDescriptionTab = ({ product }) => {
         <Tab.Content>
           <Tab.Pane eventKey="description">
             <div className="product-description-tab__details">
-              {product.fullDescription}
+              {product.description}
             </div>
           </Tab.Pane>
           <Tab.Pane eventKey="additionalInfo">
@@ -52,7 +52,7 @@ const ProductDescriptionTab = ({ product }) => {
               </table>
             </div>
           </Tab.Pane>
-          <Tab.Pane eventKey="reviews">
+          {/* <Tab.Pane eventKey="reviews">
             <div className="product-description-tab__review">
               <div className="comments">
                 <h5 className="product-tab-title">
@@ -171,7 +171,7 @@ const ProductDescriptionTab = ({ product }) => {
                 </form>
               </div>
             </div>
-          </Tab.Pane>
+          </Tab.Pane> */}
         </Tab.Content>
       </Tab.Container>
     </div>

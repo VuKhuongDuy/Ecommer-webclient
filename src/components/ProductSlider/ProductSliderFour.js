@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Swiper from "react-id-swiper";
 import Link from "next/link";
-import { getDiscountPrice } from "../../lib/product";
+import { getDiscountPrice, getPercentDiscount } from "../../lib/product";
 import { ProductRating } from "../../components/Product";
 
 const ProductSliderFour = ({ title, products }) => {
@@ -65,27 +65,27 @@ const ProductSliderFour = ({ title, products }) => {
                   <div className="product-chunk" key={key}>
                     {chunk.map((product, key) => {
                       const discountedPrice = getDiscountPrice(
-                        product.price,
+                        product.selling_price,
                         product.discount
                       ).toFixed(2);
-                      const productPrice = product.price.toFixed(2);
+                      const productPrice = product.selling_price.toFixed(2);
                       return (
                         <div className="widget-product" key={key}>
                           <div className="widget-product__image">
                             <Link
-                              href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                              as={"/shop/product-basic/" + product.slug}
+                              href={`/product/[slug]?slug=${product.slug}`}
+                              as={"/product/" + product.slug}
                             >
                               <a>
-                                <img src={product.thumbImage[0]} alt="" />
+                                <img src={product.thumb_image[0].url} alt="" />
                               </a>
                             </Link>
                           </div>
                           <div className="widget-product__content">
                             <h6 className="product-title">
                               <Link
-                                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                                as={"/shop/product-basic/" + product.slug}
+                                href={`/product/[slug]?slug=${product.slug}`}
+                                as={"/product/" + product.slug}
                               >
                                 <a>{product.name}</a>
                               </Link>
@@ -98,7 +98,7 @@ const ProductSliderFour = ({ title, products }) => {
                                   </span>
                                   <del>${productPrice}</del>
                                   <span className="on-sale">
-                                    {product.discount}% Off
+                                  {getPercentDiscount(product)}% Off
                                   </span>
                                 </Fragment>
                               ) : (

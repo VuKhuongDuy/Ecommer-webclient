@@ -36,12 +36,12 @@ const ProductGridOne = ({
         <div className="product-grid">
           <div className="product-grid__image">
             <Link
-              href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-              as={"/shop/product-basic/" + product.slug}
+              href={`/product/[slug]?slug=${product.slug}`}
+              as={"/product/" + product.slug}
             >
               <a>
                 <img
-                  src={colorImage ? colorImage : product.thumbImage[0]}
+                  src={colorImage ? colorImage : product.thumb_image[0].url}
                   alt="product_img1"
                 />
               </a>
@@ -68,8 +68,8 @@ const ProductGridOne = ({
                     </a>
                   ) : product.variation && product.variation.length >= 1 ? (
                     <Link
-                      href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                      as={"/shop/product-basic/" + product.slug}
+                      href={`/product/[slug]?slug=${product.slug}`}
+                      as={"/product/" + product.slug}
                     >
                       <a>
                         <i className="icon-wrench" />
@@ -130,8 +130,8 @@ const ProductGridOne = ({
           <div className="product-grid__info">
             <h6 className="product-title">
               <Link
-                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                as={"/shop/product-basic/" + product.slug}
+                href={`/product/[slug]?slug=${product.slug}`}
+                as={"/product/" + product.slug}
               >
                 <a>{product.name}</a>
               </Link>

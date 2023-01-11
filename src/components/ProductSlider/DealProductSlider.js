@@ -77,12 +77,12 @@ console.log({products})
                       <div className="deal-product" key={key}>
                         <div className="deal-product__image">
                           <Link
-                            href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                            as={"/shop/product-basic/" + product.slug}
+                            href={`/product/[slug]?slug=${product.slug}`}
+                            as={"/product/" + product.slug}
                           >
                             <a>
                               <img
-                                src={product.thumbImage[0]}
+                                src={product.thumb_image[0].url}
                                 alt="product_img1"
                               />
                             </a>
@@ -91,8 +91,8 @@ console.log({products})
                         <div className="deal-product__info">
                           <h5 className="product-title">
                             <Link
-                              href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                              as={"/shop/product-basic/" + product.slug}
+                              href={`/product/[slug]?slug=${product.slug}`}
+                              as={"/product/" + product.slug}
                             >
                               <a>{product.name}</a>
                             </Link>

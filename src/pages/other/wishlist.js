@@ -62,12 +62,12 @@ const Wishlist = ({
                           <tr key={key}>
                             <td className="product-thumbnail">
                               <Link
-                                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                                as={"/shop/product-basic/" + product.slug}
+                                href={`/product/[slug]?slug=${product.slug}`}
+                                as={"/product/" + product.slug}
                               >
                                 <a>
                                   <img
-                                    src={product.thumbImage[0]}
+                                    src={product.thumb_image[0].url}
                                     alt="product1"
                                   />
                                 </a>
@@ -75,8 +75,8 @@ const Wishlist = ({
                             </td>
                             <td className="product-name" data-title="Product">
                               <Link
-                                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                                as={"/shop/product-basic/" + product.slug}
+                                href={`/product/[slug]?slug=${product.slug}`}
+                                as={"/product/" + product.slug}
                               >
                                 <a>{product.name}</a>
                               </Link>
@@ -106,8 +106,8 @@ const Wishlist = ({
                               ) : product.variation &&
                                 product.variation.length >= 1 ? (
                                 <Link
-                                  href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                                  as={`/shop/product-basic/${product.slug}`}
+                                  href={`/product/[slug]?slug=${product.slug}`}
+                                  as={`/product/${product.slug}`}
                                 >
                                   <a className="btn btn-fill-out">
                                     Select option

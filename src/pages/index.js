@@ -2,21 +2,16 @@ import { LayoutSix } from "../layouts";
 import { HeroSliderSix } from "../components/HeroSlider";
 import { BannerFive, BannerSix } from "../components/Banner";
 import { CategorySliderTwo } from "../components/CategorySlider";
-import { ProductTabFour } from "../components/ProductTab";
 import { ProductSliderEleven } from "../components/ProductSlider";
-import { TestimonialOne } from "../components/Testimonial";
 import { BlogGrid } from "../components/Blog";
-import { BrandLogoTwo } from "../components/BrandLogo";
 
 // import heroSliderSixData from "../data/hero-sliders/hero-slider-six.json";
 // import categorySliderData from "../data/category-sliders/category-slider-two.json";
-import testimonialOneData from "../data/testimonials/testimonial-one.json";
-import brandLogoData from "../data/brand-logo/brand-logo-one.json";
-import { categoryService, productService, bannerService } from "../api-services";
+import { categoryService, productService, bannerService, postService } from "../api-services";
 
 const ElectronicsTwo = ({
   categories,
-  categoriesSlideData,
+  categoriesSlide,
   newProducts,
   featuredProducts,
   bestSellerProducts,
@@ -26,6 +21,7 @@ const ElectronicsTwo = ({
   banner1,
   banner2,
   slides,
+  posts,
 }) => {
   console.log({categories})
   console.log({newProducts})
@@ -37,6 +33,7 @@ const ElectronicsTwo = ({
   console.log({banner1})
   console.log({banner2})
   console.log({slides})
+  console.log({posts})
 
   return (
     <LayoutSix navPositionClass="justify-content-start" categories={categories}>
@@ -45,7 +42,7 @@ const ElectronicsTwo = ({
       {/* banner */}
       <BannerFive banner={banner1} />
       {/* category slider */}
-      <CategorySliderTwo categorySliderData={categoriesSlideData} />
+      <CategorySliderTwo categorySliderData={categoriesSlide} />
       
       <ProductSliderEleven
         title="Flash Sale Products"
@@ -54,12 +51,24 @@ const ElectronicsTwo = ({
       {/* banner */}
       <BannerSix banner={banner2} />
       {/* tab product */}
-      <ProductTabFour
+      {/* <ProductTabFour
         title="Best Seller Products"
         newProducts={newProducts}
         bestSellerProducts={bestSellerProducts}
         featuredProducts={featuredProducts}
         saleProducts={flashSaleProducts}
+      /> */}
+      <ProductSliderEleven
+        title="Best Seller"
+        products={bestSellerProducts}
+      />
+      <ProductSliderEleven
+        title="Featured"
+        products={featuredProducts}
+      />
+      <ProductSliderEleven
+        title="New"
+        products={newProducts}
       />
       
       <ProductSliderEleven
@@ -67,11 +76,11 @@ const ElectronicsTwo = ({
         products={bestSellerProducts}
       />
       {/* testimonial */}
-      <TestimonialOne testimonialData={testimonialOneData} />
+      {/* <TestimonialOne testimonialData={testimonialOneData} /> */}
       {/* blog grid */}
-      <BlogGrid customClass="blog-post--style-two--no-radius" />
+      <BlogGrid customClass="blog-post--style-two--no-radius" posts={posts} />
       {/* brand logo */}
-      <BrandLogoTwo brandLogoData={brandLogoData} />
+      {/* <BrandLogoTwo brandLogoData={brandLogoData} /> */}
     </LayoutSix>
   );
 };
@@ -89,7 +98,7 @@ const ElectronicsTwo = ({
 
 export async function getServerSideProps() {
   const categoriesData = await categoryService.get();
-  const categoriesSlideData = await categoryService.get('', 7);
+  const categoriesSlide = await categoryService.get('', 7);
   // const productsData = await productService.get();
   const newProductsData = await productService.getNew();
   const featuredProducts = await productService.getFeatured();
@@ -100,11 +109,12 @@ export async function getServerSideProps() {
   const banner1 = await bannerService.getHomeBanner1();
   const banner2 = await bannerService.getHomeBanner2();
   const slides = await bannerService.getBannerSlide();
+  const posts = await postService.getSlidePost();
   return {
     props: {
       categories: categoriesData.data || [],
-      categoriesSlideData: categoriesSlideData.data || [],
-      newProductsData: newProductsData.data || [],
+      categoriesSlide: categoriesSlide.data || [],
+      newProducts: newProductsData.data || [],
       featuredProducts: featuredProducts.data || [],
       bestSellerProducts: bestSellerProducts.data || [],
       flashSaleProducts: flashSaleProducts.data || [],
@@ -112,7 +122,8 @@ export async function getServerSideProps() {
       carouselProducts: carouselProducts.data || [],
       banner1: banner1.data || [],
       banner2: banner2.data || [],
-      slides: slides.data || []
+      slides: slides.data || [],
+      posts: posts.data || [],
     },
   }
 }

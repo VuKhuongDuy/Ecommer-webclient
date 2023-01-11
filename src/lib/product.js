@@ -52,8 +52,27 @@ export const getProducts = (products, category, type, limit) => {
 
 // get product discount price
 export const getDiscountPrice = (price, discount) => {
-  return discount && discount > 0 ? price - price * (discount / 100) : price;
+  if(!discount) {
+    return price;
+  }
+  if(discount.price) {
+    return discount.price;
+  }
+  if(discount.percent) {
+    return price - price * (discount / 100);
+  }
+
+  return price;
 };
+
+export const getPercentDiscount = (product) => {
+  if(product.percent) {
+    return product.percent;
+  }
+  if(product.discount.price) {
+    return ((product.selling_price - product.discount.price) * 100 / product.selling_price).toFixed(0);
+  }
+}
 
 // get product cart quantity
 export const getProductCartQuantity = (cartItems, product, color, size) => {
@@ -154,49 +173,52 @@ const getIndividualColorObjectArray = (array) => {
 };
 
 // get individual categories
-export const getIndividualCategories = (products) => {
-  let productCategories = [];
-  products &&
-    products.map((product) => {
-      return (
-        product.category &&
-        product.category.map((single) => {
-          return productCategories.push(single);
-        })
-      );
-    });
-  var individualProductCategories = [];
-  var obj = {};
-  var newArr = [];
+// export const getIndividualCategories = (products) => {
+//   let productCategories = [];
+//   console.log({products})
+//   products &&
+//   products.length > 0 &&
+//     products.map((product) => {
+//       return (
+//         product.category &&
+//         product.category.map((single) => {
+//           return productCategories.push(single);
+//         })
+//       );
+//     });
+//   var individualProductCategories = [];
+//   var obj = {};
+//   var newArr = [];
 
-  function countItems(productCategories, val) {
-    var count = 0,
-      i;
-    while ((i = productCategories.indexOf(val, i)) != -1) {
-      ++count;
-      ++i;
-    }
-    return count;
-  }
+//   function countItems(productCategories, val) {
+//     var count = 0,
+//       i;
+//     while ((i = productCategories.indexOf(val, i)) != -1) {
+//       ++count;
+//       ++i;
+//     }
+//     return count;
+//   }
 
-  productCategories.forEach((item) => {
-    let count = countItems(productCategories, item);
-    var objValues = Object.values(obj);
-    newArr.push(objValues[0]);
-    if (newArr.indexOf(item) !== -1) return;
-    obj = {
-      name: item,
-      count: count
-    };
-    individualProductCategories.push(obj);
-  });
-  return individualProductCategories;
-};
+//   productCategories.forEach((item) => {
+//     let count = countItems(productCategories, item);
+//     var objValues = Object.values(obj);
+//     newArr.push(objValues[0]);
+//     if (newArr.indexOf(item) !== -1) return;
+//     obj = {
+//       name: item,
+//       count: count
+//     };
+//     individualProductCategories.push(obj);
+//   });
+//   return individualProductCategories;
+// };
 
 // get individual tags
 export const getIndividualTags = (products) => {
   let productTags = [];
   products &&
+    products.length < 0 &&
     products.map((product) => {
       return (
         product.tag &&
@@ -213,6 +235,7 @@ export const getIndividualTags = (products) => {
 export const getIndividualColors = (products) => {
   let productColors = [];
   products &&
+  products.length > 0 &&
     products.map((product) => {
       return (
         product.variation &&
@@ -232,6 +255,7 @@ export const getIndividualColors = (products) => {
 export const getProductsIndividualSizes = (products) => {
   let productSizes = [];
   products &&
+    products.length > 0 && 
     products.map((product) => {
       return (
         product.variation &&
@@ -279,3 +303,42 @@ export const setActiveLayout = (e) => {
   });
   e.currentTarget.classList.add("active");
 };
+
+export const getIndividualCategories = (products) => {
+  const categories = [];
+  products.forEach((product) => {
+    let key = 'Other'
+    if(product.category) {
+      key = product.category.name;
+    }
+
+    const index = categories.findIndex(m => m.name === key);
+    if ( index < 0 ) {
+      categories.push({
+        name: key,
+        count: 1,
+        id: product.category.id,
+      })
+    } else {
+      categories[index].count ++;
+    }
+  })
+
+  return categories;
+}
+
+export const compareProperties = (propertiesFirst, propertiesSecond) => {
+  const arr1 = Object.keys(propertiesFirst);
+  const arr2 = Object.keys(propertiesSecond);
+  if(arr1.length != arr2.length) {
+    return false;
+  }
+
+  for(let i = 0; i < arr1.length; i++) {
+    if(propertiesFirst[arr1[i]] != propertiesSecond[arr1[i]]) {
+      return false;
+    }
+  }
+
+  return true;
+}

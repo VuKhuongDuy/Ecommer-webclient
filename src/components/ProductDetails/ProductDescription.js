@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import Link from "next/link";
-import { getProductCartQuantity } from "../../lib/product";
+import { getProductCartQuantity, getPercentDiscount } from "../../lib/product";
 import { ProductRating } from "../Product";
 import { BsShield } from "react-icons/bs";
 import { AiOutlineReload } from "react-icons/ai";
@@ -10,7 +10,7 @@ import {
   IoLogoTwitter,
   IoLogoGoogleplus,
   IoLogoYoutube,
-  IoLogoInstagram
+  IoLogoInstagram,
 } from "react-icons/io";
 
 const ProductDescription = ({
@@ -18,16 +18,12 @@ const ProductDescription = ({
   productPrice,
   discountedPrice,
   cartItems,
-  wishlistItem,
-  compareItem,
   addToast,
   addToCart,
-  addToWishlist,
-  deleteFromWishlist,
-  addToCompare,
-  deleteFromCompare,
-  productContentButtonStyleClass
+  productContentButtonStyleClass,
 }) => {
+  const [rerender, setRerender] = useState(false);
+  const [selectedProperties, setSelectedProperties] = useState([]);
   const [selectedProductColor, setSelectedProductColor] = useState(
     product.variation ? product.variation[0].color : ""
   );
@@ -45,6 +41,23 @@ const ProductDescription = ({
     selectedProductColor,
     selectedProductSize
   );
+
+  const setSelectedProductType = (property, value) => {
+    const tmp = selectedProperties;
+    tmp[property] = value;
+    setSelectedProperties(tmp);
+    setRerender(!rerender);
+  };
+
+  const checkPropertySelect = (propertyName, index, value) => {
+    if (!selectedProperties[propertyName] && index === 0) {
+      return "checked";
+    } else if (selectedProperties[propertyName] === value) {
+      return "checked";
+    }
+    return "";
+  };
+
   return (
     <div className="product-content">
       <h2 className="product-content__title space-mb--10">{product.name}</h2>
@@ -54,7 +67,9 @@ const ProductDescription = ({
             <Fragment>
               <span className="price">${discountedPrice}</span>
               <del>${productPrice}</del>
-              <span className="on-sale">{product.discount}% Off</span>
+              <span className="on-sale">
+                {getPercentDiscount(product)}% Off
+              </span>
             </Fragment>
           ) : (
             <span className="price">${productPrice}</span>
@@ -72,7 +87,7 @@ const ProductDescription = ({
         )}
       </div>
       <div className="product-content__description space-mb--20">
-        <p>{product.shortDescription}</p>
+        <p>{product.title}</p>
       </div>
 
       <div className="product-content__sort-info space-mb--20">
@@ -89,90 +104,123 @@ const ProductDescription = ({
         </ul>
       </div>
 
-      {product.variation ? (
-        <div className="product-content__size-color">
-          <div className="product-content__color space-mb--10">
-            <div className="product-content__color__title">Color</div>
-            <div className="product-content__color__content">
-              {product.variation.map((single, i) => {
-                return (
-                  <Fragment key={i}>
-                    <input
-                      type="radio"
-                      value={single.color}
-                      name="product-color"
-                      id={single.color}
-                      checked={
-                        single.color === selectedProductColor ? "checked" : ""
-                      }
-                      onChange={() => {
-                        setSelectedProductColor(single.color);
-                        setSelectedProductSize(single.size[0].name);
-                        setProductStock(single.size[0].stock);
-                        setQuantityCount(1);
-                      }}
-                    />
-                    <label
-                      htmlFor={single.color}
-                      style={{ backgroundColor: single.colorCode }}
-                    ></label>
-                  </Fragment>
-                );
-              })}
+      {product.properties ? (
+        <div className="product-quickview__size-color">
+          {product.properties.map((property, index) => (
+            <div
+              className="product-quickview__size space-mb--10"
+              key={`${rerender}-${index}`}
+            >
+              <div className="product-quickview__size__title">
+                {property.name}
+              </div>
+              <div className="product-quickview__size__content">
+                {property.value.map((single, i) => {
+                  return (
+                    <Fragment key={i}>
+                      <input
+                        type="radio"
+                        value={`${property.name}: ${single}`}
+                        checked={checkPropertySelect(property.name, i, single)}
+                        id={single}
+                        onChange={() => {
+                          setSelectedProductType(property.name, single);
+                          // setProductStock(single.stock);
+                          setQuantityCount(1);
+                        }}
+                      />
+                      <label htmlFor={single}>{single}</label>
+                    </Fragment>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-          <div className="product-content__size space-mb--20">
-            <div className="product-content__size__title">Size</div>
-            <div className="product-content__size__content">
-              {product.variation &&
-                product.variation.map((single) => {
-                  return single.color === selectedProductColor
-                    ? single.size.map((singleSize, i) => {
+          ))}
+          {/* <div className="product-quickview__color space-mb--10">
+                    <div className="product-quickview__color__title">Color</div>
+                    <div className="product-quickview__color__content">
+                      {product.variation.map((single, i) => {
                         return (
                           <Fragment key={i}>
                             <input
                               type="radio"
-                              value={singleSize.name}
+                              value={single.color}
+                              name="product-color"
+                              id={single.color}
                               checked={
-                                singleSize.name === selectedProductSize
+                                single.color === selectedProductColor
                                   ? "checked"
                                   : ""
                               }
-                              id={singleSize.name}
                               onChange={() => {
-                                setSelectedProductSize(singleSize.name);
-                                setProductStock(singleSize.stock);
+                                setSelectedProductColor(single.color);
+                                setSelectedProductSize(single.size[0].name);
+                                setProductStock(single.size[0].stock);
                                 setQuantityCount(1);
                               }}
                             />
-                            <label htmlFor={singleSize.name}>
-                              {singleSize.name}
-                            </label>
+                            <label
+                              htmlFor={single.color}
+                              style={{ backgroundColor: single.colorCode }}
+                            ></label>
                           </Fragment>
                         );
-                      })
-                    : "";
-                })}
-            </div>
-          </div>
+                      })}
+                    </div>
+                  </div>
+                  <div className="product-quickview__size space-mb--20">
+                    <div className="product-quickview__size__title">Size</div>
+                    <div className="product-quickview__size__content">
+                      {product.variation &&
+                        product.variation.map((single) => {
+                          return single.color === selectedProductColor
+                            ? single.size.map((singleSize, i) => {
+                                return (
+                                  <Fragment key={i}>
+                                    <input
+                                      type="radio"
+                                      value={singleSize.name}
+                                      checked={
+                                        singleSize.name === selectedProductSize
+                                          ? "checked"
+                                          : ""
+                                      }
+                                      id={singleSize.name}
+                                      onChange={() => {
+                                        setSelectedProductSize(singleSize.name);
+                                        setProductStock(singleSize.stock);
+                                        setQuantityCount(1);
+                                      }}
+                                    />
+                                    <label htmlFor={singleSize.name}>
+                                      {singleSize.name}
+                                    </label>
+                                  </Fragment>
+                                );
+                              })
+                            : "";
+                        })}
+                    </div>
+                  </div> */}
         </div>
       ) : (
         ""
       )}
       <hr />
-      {product.affiliateLink ? (
+      {/* {product.slug ? (
         <div className="product-content__quality">
           <div className="product-content__cart btn-hover">
             <a
-              href={product.affiliateLink}
+              href={product.slug}
               target="_blank"
-              className="btn btn-fill-out btn-addtocart"
+              className="btn btn-fill-out btn-addtocart" rel="noreferrer"
             >
               Buy Now
             </a>
           </div>
         </div>
-      ) : (
+      ) :  */}
+      {/* ( */}
         <Fragment>
           <div
             className={`${
@@ -200,7 +248,7 @@ const ProductDescription = ({
                 <button
                   onClick={() =>
                     setQuantityCount(
-                      quantityCount < productStock - productCartQty
+                      quantityCount < product.quantity - product.sale_count
                         ? quantityCount + 1
                         : quantityCount
                     )
@@ -211,18 +259,17 @@ const ProductDescription = ({
                 </button>
               </div>
             </div>
-            {productStock && productStock > 0 ? (
+            {product.quantity > product.sale_count ? (
               <button
                 onClick={() =>
                   addToCart(
                     product,
                     addToast,
                     quantityCount,
-                    selectedProductColor,
-                    selectedProductSize
+                    selectedProperties,
                   )
                 }
-                disabled={productCartQty >= productStock}
+                // disabled={product.quantity >= product.sale_count}
                 className="btn btn-fill-out btn-addtocart space-ml--10"
               >
                 <i className="icon-basket-loaded" /> Add To Cart
@@ -233,7 +280,7 @@ const ProductDescription = ({
               </button>
             )}
 
-            <button
+            {/* <button
               className={`product-content__compare ${
                 compareItem !== undefined ? "active" : ""
               }`}
@@ -267,16 +314,16 @@ const ProductDescription = ({
               }
             >
               <i className="icon-heart" />
-            </button>
+            </button> */}
           </div>
         </Fragment>
-      )}
+      {/* )} */}
       <hr />
       <ul className="product-content__product-meta">
         <li>
           SKU: <span>{product.sku}</span>
         </li>
-        <li>
+        {/* <li>
           Category:
           {product.category &&
             product.category.map((item, index, arr) => {
@@ -305,7 +352,7 @@ const ProductDescription = ({
                 </Link>
               );
             })}
-        </li>
+        </li> */}
       </ul>
       <div className="product-content__product-share space-mt--15">
         <span>Share:</span>

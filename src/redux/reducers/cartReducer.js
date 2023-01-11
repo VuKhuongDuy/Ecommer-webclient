@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { compareProperties } from '../../lib/product'
 import {
   ADD_TO_CART,
   DECREASE_QUANTITY,
@@ -14,14 +15,14 @@ const cartReducer = (state = initState, action) => {
 
   if (action.type === ADD_TO_CART) {
     // for non variant products
-    if (product.variation === undefined) {
+    if (product.properties === undefined) {
       const cartItem = cartItems.filter((item) => item.id === product.id)[0];
       if (cartItem === undefined) {
         return [
           ...cartItems,
           {
             ...product,
-            quantity: product.quantity ? product.quantity : 1,
+            cartQuantity: product.cartQuantity ? product.cartQuantity : 1,
             cartItemId: uuidv4()
           }
         ];
@@ -30,9 +31,9 @@ const cartReducer = (state = initState, action) => {
           item.cartItemId === cartItem.cartItemId
             ? {
                 ...item,
-                quantity: product.quantity
-                  ? item.quantity + product.quantity
-                  : item.quantity + 1
+                cartQuantity: product.cartQuantity
+                  ? item.cartQuantity + product.cartQuantity
+                  : item.cartQuantity + 1
               }
             : item
         );
@@ -42,10 +43,7 @@ const cartReducer = (state = initState, action) => {
       const cartItem = cartItems.filter(
         (item) =>
           item.id === product.id &&
-          product.selectedProductColor &&
-          product.selectedProductColor === item.selectedProductColor &&
-          product.selectedProductSize &&
-          product.selectedProductSize === item.selectedProductSize &&
+          compareProperties(item.selectedProperties, product.selectedProperties) &&
           (product.cartItemId ? product.cartItemId === item.cartItemId : true)
       )[0];
 
@@ -54,20 +52,19 @@ const cartReducer = (state = initState, action) => {
           ...cartItems,
           {
             ...product,
-            quantity: product.quantity ? product.quantity : 1,
+            cartQuantity: product.cartQuantity ? product.cartQuantity : 1,
             cartItemId: uuidv4()
           }
         ];
       } else if (
         cartItem !== undefined &&
-        (cartItem.selectedProductColor !== product.selectedProductColor ||
-          cartItem.selectedProductSize !== product.selectedProductSize)
+        !compareProperties(cartItem.selectedProperties, product.selectedProperties)
       ) {
         return [
           ...cartItems,
           {
             ...product,
-            quantity: product.quantity ? product.quantity : 1,
+            cartQuantity: product.cartQuantity ? product.cartQuantity : 1,
             cartItemId: uuidv4()
           }
         ];
@@ -76,11 +73,10 @@ const cartReducer = (state = initState, action) => {
           item.cartItemId === cartItem.cartItemId
             ? {
                 ...item,
-                quantity: product.quantity
-                  ? item.quantity + product.quantity
-                  : item.quantity + 1,
-                selectedProductColor: product.selectedProductColor,
-                selectedProductSize: product.selectedProductSize
+                cartQuantity: product.cartQuantity
+                  ? item.cartQuantity + product.cartQuantity
+                  : item.cartQuantity + 1,
+                  selectedProperties: product.selectedProperties,
               }
             : item
         );
@@ -89,7 +85,7 @@ const cartReducer = (state = initState, action) => {
   }
 
   if (action.type === DECREASE_QUANTITY) {
-    if (product.quantity === 1) {
+    if (product.cartQuantity === 1) {
       const remainingItems = (cartItems, product) =>
         cartItems.filter(
           (cartItem) => cartItem.cartItemId !== product.cartItemId
@@ -98,7 +94,7 @@ const cartReducer = (state = initState, action) => {
     } else {
       return cartItems.map((item) =>
         item.cartItemId === product.cartItemId
-          ? { ...item, quantity: item.quantity - 1 }
+          ? { ...item, cartQuantity: item.cartQuantity - 1 }
           : item
       );
     }

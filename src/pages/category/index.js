@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Container, Row, Col } from "react-bootstrap";
 import Paginator from "react-hooks-paginator";
+
 import { LayoutOne } from "../../layouts";
 import { BreadcrumbOne } from "../../components/Breadcrumb";
 import { Sidebar, ShopHeader, ShopProducts } from "../../components/Shop";
@@ -15,11 +16,10 @@ const ListLeftSidebar = ({ products, bannerProduct }) => {
   const [filterSortValue, setFilterSortValue] = useState("");
   const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentData, setCurrentData] = useState([]);
+  const [currentData, setCurrentData] = useState(products);
   const [sortedProducts, setSortedProducts] = useState([]);
-  const [shopTopFilterStatus, setShopTopFilterStatus] = useState(false);
   const [categoryViewing, setCategoryViewing] = useState(null);
-
+  const [shopTopFilterStatus, setShopTopFilterStatus] = useState(false);
   const pageLimit = 12;
 
   const getLayout = (layout) => {
@@ -116,17 +116,22 @@ const ListLeftSidebar = ({ products, bannerProduct }) => {
   );
 };
 
+// const mapStateToProps = (state) => {
+//   return {
+//     products: state.productData
+//   };
+// };
+
 export async function getServerSideProps({query}) {
   const {q, category} = query;
   const products = await productService.get(q, 10, 1, category);
   const bannerProduct = await bannerService.getBannerProductSidebar();
-
   return {
     props: {
       products: products.data.data || [],
       bannerProduct: bannerProduct.data || [],
     },
-  };
-};
+  }
+}
 
 export default ListLeftSidebar;

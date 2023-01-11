@@ -153,7 +153,7 @@ const Checkout = ({ cartItems }) => {
                       <tbody>
                         {cartItems.map((product, i) => {
                           const discountedPrice = getDiscountPrice(
-                            product.price,
+                            product.selling_price,
                             product.discount
                           ).toFixed(2);
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Col } from "react-bootstrap";
 import ProductModal from "./elements/ProductModal";
 import { ProductRating } from "../Product";
+import { getPercentDiscount } from "../../lib/product";
 
 const ProductGridTwo = ({
   product,
@@ -34,12 +35,12 @@ const ProductGridTwo = ({
         <div className="product-grid">
           <div className="product-grid__image">
             <Link
-              href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-              as={"/shop/product-basic/" + product.slug}
+              href={`/product/[slug]?slug=${product.slug}`}
+              as={"/product/" + product.slug}
             >
               <a>
                 <img
-                  src={colorImage ? colorImage : product.thumbImage[0]}
+                  src={colorImage ? colorImage : product.thumb_image[0].url}
                   alt="product_img1"
                 />
               </a>
@@ -66,8 +67,8 @@ const ProductGridTwo = ({
                     </a>
                   ) : product.variation && product.variation.length >= 1 ? (
                     <Link
-                      href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                      as={"/shop/product-basic/" + product.slug}
+                      href={`/product/[slug]?slug=${product.slug}`}
+                      as={"/product/" + product.slug}
                     >
                       <a>
                         <i className="icon-wrench" />
@@ -128,8 +129,8 @@ const ProductGridTwo = ({
           <div className="product-grid__info">
             <h6 className="product-title">
               <Link
-                href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                as={"/shop/product-basic/" + product.slug}
+                href={`/product/[slug]?slug=${product.slug}`}
+                as={"/product/" + product.slug}
               >
                 <a>{product.name}</a>
               </Link>
@@ -139,7 +140,7 @@ const ProductGridTwo = ({
                 <Fragment>
                   <span className="price">${discountedPrice}</span>
                   <del>${productPrice}</del>
-                  <span className="on-sale">{product.discount}% Off</span>
+                  <span className="on-sale">{getPercentDiscount(product)}% Off</span>
                 </Fragment>
               ) : (
                 <span className="price">${productPrice}</span>

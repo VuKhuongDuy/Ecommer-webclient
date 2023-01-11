@@ -60,7 +60,7 @@ const Cart = ({
                       <tbody>
                         {cartItems.map((product, key) => {
                           const discountedPrice = getDiscountPrice(
-                            product.price,
+                            product.selling_price,
                             product.discount
                           ).toFixed(2);
 
@@ -69,12 +69,12 @@ const Cart = ({
                             <tr key={key}>
                               <td className="product-thumbnail">
                                 <Link
-                                  href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                                  as={"/shop/product-basic/" + product.slug}
+                                  href={`/product/[slug]?slug=${product.slug}`}
+                                  as={"/product/" + product.slug}
                                 >
                                   <a>
                                     <img
-                                      src={product.thumbImage[0]}
+                                      src={product.thumb_image[0].url}
                                       alt="product1"
                                     />
                                   </a>
@@ -82,8 +82,8 @@ const Cart = ({
                               </td>
                               <td className="product-name" data-title="Product">
                                 <Link
-                                  href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                                  as={"/shop/product-basic/" + product.slug}
+                                  href={`/product/[slug]?slug=${product.slug}`}
+                                  as={"/product/" + product.slug}
                                 >
                                   <a>{product.name}</a>
                                 </Link>

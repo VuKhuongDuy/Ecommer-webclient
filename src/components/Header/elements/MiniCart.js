@@ -16,7 +16,7 @@ const MiniCart = ({ cartItems, deleteFromCart }) => {
           <ul className="cart-list">
             {cartItems.map((product, key) => {
               const discountedPrice = getDiscountPrice(
-                product.price,
+                product.selling_price,
                 product.discount
               ).toFixed(2);
               cartTotalPrice += discountedPrice * product.quantity;
@@ -31,18 +31,18 @@ const MiniCart = ({ cartItems, deleteFromCart }) => {
                   <div className="single-item">
                     <div className="single-item__image">
                       <Link
-                        href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                        as={"/shop/product-basic/" + product.slug}
+                        href={`/product/[slug]?slug=${product.slug}`}
+                        as={"/product/" + product.slug}
                       >
                         <a>
-                          <img src={product.thumbImage[0]} alt="cart_thumb1" />
+                          <img src={product.thumb_image[0].url} alt="cart_thumb1" />
                         </a>
                       </Link>
                     </div>
                     <div className="single-item__content">
                       <Link
-                        href={`/shop/product-basic/[slug]?slug=${product.slug}`}
-                        as={"/shop/product-basic/" + product.slug}
+                        href={`/product/[slug]?slug=${product.slug}`}
+                        as={"/product/" + product.slug}
                       >
                         <a>{product.name}</a>
                       </Link>
@@ -80,7 +80,7 @@ const MiniCart = ({ cartItems, deleteFromCart }) => {
               {cartTotalPrice.toFixed(2)}
             </p>
             <div className="cart-buttons">
-              <Link href="/other/cart">
+              <Link href="/cart">
                 <a className="btn btn-fill-line view-cart">View Cart</a>
               </Link>
               <Link href="/other/checkout">

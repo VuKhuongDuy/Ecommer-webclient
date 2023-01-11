@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Container, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
-import { IoIosSearch, IoIosMenu } from "react-icons/io";
+import { IoIosMenu } from "react-icons/io";
 import { AiOutlineShoppingCart, AiOutlineHeart } from "react-icons/ai";
 import { BsPerson } from "react-icons/bs";
 import { FiPhoneCall } from "react-icons/fi";
-import HeaderTopThree from "./elements/HeaderTopThree";
+import { useRouter } from 'next/router';
+
 import Navigation from "./elements/Navigation";
 import MobileMenu from "./elements/MobileMenu";
 import MobileCategoryMenuTwo from "./elements/MobileCategoryMenuTwo";
@@ -16,6 +17,9 @@ import CategoryMenuThree from "./elements/CategoryMenuThree";
 const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) => {
   const [scroll, setScroll] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
+  const [txtSearch, setTxtSearch] = useState('');
+  const [categorySelected, setCategorySelected] = useState('');
+  const router = useRouter();
   const [offCanvasMobileMenuActive, setOffCanvasMobileMenuActive] = useState(
     false
   );
@@ -23,7 +27,7 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) =
     offCanvasMobileCategoryMenuActive,
     setOffCanvasMobileCategoryMenuActive
   ] = useState(false);
-
+  
   useEffect(() => {
     const header = document.querySelector(".header-wrap");
     setHeaderHeight(header.offsetHeight);
@@ -36,6 +40,35 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) =
   const handleScroll = () => {
     setScroll(window.scrollY);
   };
+
+  const handleChange = async (event) => {
+    setTxtSearch(event.target.value);
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const handleSearch = async () => {
+    const index = categories.findIndex(m => m.id == categorySelected);
+    const categorySlug = index >= 0 ? categories[index].slug : '';
+    const pathName = `/category/${categorySlug}`
+
+    router.push({
+      pathname: pathName,
+      query: {
+        q: txtSearch,
+        category: categorySlug,
+      }
+    })
+  }
+
+  const handleSelectCategory = async (event) => {
+
+    setCategorySelected(event.target.value);
+  }
 
   return (
     <header
@@ -66,31 +99,30 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) =
               </a>
             </Link>
             <div className="product-search-form product-search-form--style-three d-none d-lg-block">
-              <form>
                 <div className="input-group">
-                  {/* <div className="input-group-prepend">
+                  <div className="input-group-prepend">
                     <div className="custom-select-wrapper">
-                      <select className="first-null">
+                      <select className="first-null" onChange={handleSelectCategory} value={categorySelected}>
                         <option value>All Category</option>
-                        <option value="Dresses">Dresses</option>
-                        <option value="Shirt-Tops">Shirt &amp; Tops</option>
-                        <option value="T-Shirt">T-Shirt</option>
-                        <option value="Pants">Pants</option>
-                        <option value="Jeans">Jeans</option>
+                        {
+                          categories.map(elem => <option value={elem.id} key={elem.id}>{elem.name}</option>)
+                        }
                       </select>
                     </div>
-                  </div> */}
+                  </div>
                   <input
                     className="form-control"
                     placeholder="Search Product..."
                     required
                     type="text"
+                    value={txtSearch}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
                   />
-                  <button type="submit" className="search-btn-two">
+                  <button className="search-btn-two" onClick={handleSearch}>
                     Search
                   </button>
                 </div>
-              </form>
             </div>
             <div className="contact-phone">
               <FiPhoneCall />
@@ -116,13 +148,13 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) =
               </div>
               <div className="d-none d-lg-block">
                 {/* category menu */}
-                <CategoryMenuThree categoryMenuStyle="category-menu-trigger--style-two" />
+                <CategoryMenuThree categoryMenuStyle="category-menu-trigger--style-two" categories={categories} />
               </div>
             </Col>
             <Col lg={9} xs={6}>
               <div className="d-flex align-items-center justify-content-end">
                 {/* navigation */}
-                <Navigation positionClass={navPositionClass} categories={categories}/>
+                <Navigation positionClass={navPositionClass} categories={categories} />
                 {/* icons */}
                 <ul className="header-icons d-flex justify-content-end">
                   <li>
@@ -149,7 +181,7 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) =
                   </li>
 
                   <li className="d-none d-lg-block position-relative">
-                    <Link href="/other/cart">
+                    <Link href="/cart">
                       <a className="nav-link mini-cart-trigger pr-3 pr-lg-0">
                         <AiOutlineShoppingCart />
                         {cartItems.length > 0 ? (
@@ -164,7 +196,7 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) =
                   </li>
 
                   <li className="d-block d-lg-none position-relative">
-                    <Link href="/other/cart">
+                    <Link href="/cart">
                       <a className="nav-link mini-cart-trigger pr-3 pr-lg-0">
                         <AiOutlineShoppingCart />
                         {cartItems.length > 0 ? (

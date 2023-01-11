@@ -12,7 +12,7 @@ const HeroSliderTwo = ({ heroSliderData }) => {
       disableOnInteraction: false
     },
     watchSlidesVisibility: true,
-    effect: "fade",
+    effect: "creative",
     pagination: {
       el: ".swiper-pagination",
       clickable: true

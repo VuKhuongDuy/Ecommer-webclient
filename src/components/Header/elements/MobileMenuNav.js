@@ -124,7 +124,7 @@ const MobileMenuNav = ({ getActiveStatus }) => {
               </Link>
               <ul className="mobile-sub-menu">
                 <li>
-                  <Link href="/other/cart">
+                  <Link href="/cart">
                     <a>Cart</a>
                   </Link>
                 </li>
@@ -162,8 +162,8 @@ const MobileMenuNav = ({ getActiveStatus }) => {
               <ul className="mobile-sub-menu">
                 <li>
                   <Link
-                    href="/shop/product-basic/[slug]?slug=lorem-ipsum-fashion-eight"
-                    as="/shop/product-basic/lorem-ipsum-fashion-eight"
+                    href="/product/[slug]?slug=lorem-ipsum-fashion-eight"
+                    as="/product/lorem-ipsum-fashion-eight"
                   >
                     <a>Default</a>
                   </Link>
@@ -240,7 +240,7 @@ const MobileMenuNav = ({ getActiveStatus }) => {
               </Link>
               <ul className="mobile-sub-menu">
                 <li>
-                  <Link href="/other/cart">
+                  <Link href="/cart">
                     <a>Cart</a>
                   </Link>
                 </li>
@@ -278,8 +278,8 @@ const MobileMenuNav = ({ getActiveStatus }) => {
               <ul className="mobile-sub-menu">
                 <li>
                   <Link
-                    href="/shop/product-basic/[slug]?slug=lorem-ipsum-fashion-eight"
-                    as="/shop/product-basic/lorem-ipsum-fashion-eight"
+                    href="/product/[slug]?slug=lorem-ipsum-fashion-eight"
+                    as="/product/lorem-ipsum-fashion-eight"
                   >
                     <a>Default</a>
                   </Link>
@@ -317,8 +317,8 @@ const MobileMenuNav = ({ getActiveStatus }) => {
               <ul className="mobile-sub-menu">
                 <li>
                   <Link
-                    href="/shop/product-basic/[slug]?slug=lorem-ipsum-fashion-eight"
-                    as="/shop/product-basic/lorem-ipsum-fashion-eight"
+                    href="/product/[slug]?slug=lorem-ipsum-fashion-eight"
+                    as="/product/lorem-ipsum-fashion-eight"
                   >
                     <a>Default</a>
                   </Link>
