@@ -9,7 +9,7 @@ const BannerFive = ({ containerClass, banner }) => {
           {
             banner.map(element => <Col md={4} key={element.id}>
               <div className="sale-banner px-0">
-                <Link href={element.redirect_url}>
+                <Link href={element.redirect_url ?? "/"}>
                   <a className="hover-effect">
                     <img src={element.image} alt="shop_banner" />
                   </a>

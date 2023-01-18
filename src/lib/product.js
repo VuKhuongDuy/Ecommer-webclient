@@ -317,7 +317,7 @@ export const getIndividualCategories = (products) => {
       categories.push({
         name: key,
         count: 1,
-        id: product.category.id,
+        id: product.category?.id,
       })
     } else {
       categories[index].count ++;

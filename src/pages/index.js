@@ -23,17 +23,6 @@ const ElectronicsTwo = ({
   slides,
   posts,
 }) => {
-  console.log({categories})
-  console.log({newProducts})
-  console.log({featuredProducts})
-  console.log({bestSellerProducts})
-  console.log({flashSaleProducts})
-  console.log({dealOfTheDayProducts})
-  console.log({carouselProducts})
-  console.log({banner1})
-  console.log({banner2})
-  console.log({slides})
-  console.log({posts})
 
   return (
     <LayoutSix navPositionClass="justify-content-start" categories={categories}>

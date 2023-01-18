@@ -10,6 +10,8 @@ export const addToCart = (
   quantityCount,
   selectedProperties,
 ) => {
+  console.log("111")
+
   return dispatch => {
     if (addToast) {
       addToast("Added To Cart", { appearance: "success", autoDismiss: true });

@@ -1,8 +1,9 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import ProductModal from "./elements/ProductModal";
 import { ProductRating } from "../Product";
 import { getPercentDiscount } from "../../lib/product";
+import { getBlobSrc } from "../../common/helper";
 
 const ProductGridFive = ({
   product,
@@ -22,6 +23,14 @@ const ProductGridFive = ({
   sliderClass,
 }) => {
   const [modalShow, setModalShow] = useState(false);
+  const [colorImage, setColorImage] = useState("");
+  const [imagesSrc, setImagesSrc] = useState([]);
+
+  useEffect(async ()=>{
+    setImagesSrc(await Promise.all(product.thumb_image.map(async (img) => {
+      return await getBlobSrc(img.url)
+    })));
+  }, [])
 
   return (
     <Fragment>
@@ -37,11 +46,11 @@ const ProductGridFive = ({
               as={"/product/" + product.slug}
             >
               <a>
-                <img src={product.thumb_image[0].url} alt="product_img1" />
-                {product.thumb_image.length > 1 && (
+                <img src={imagesSrc[0]} alt="product_img1" />
+                {imagesSrc.length > 1 && (
                   <img
                     className="product-hover-image"
-                    src={colorImage ? colorImage : product.thumb_image[1].url}
+                    src={colorImage ? colorImage : imagesSrc[1]}
                     alt="product_img1"
                   />
                 )}
@@ -63,47 +72,14 @@ const ProductGridFive = ({
             <div className="product-grid__action-box">
               <ul>
                 <li>
-                  {product.affiliateLink ? (
-                    <a href={product.affiliateLink} target="_blank">
-                      <i className="icon-action-redo" />
-                    </a>
-                  ) : product.variation && product.variation.length >= 1 ? (
-                    <Link
+                <Link
                       href={`/product/[slug]?slug=${product.slug}`}
                       as={"/product/" + product.slug}
                     >
                       <a>
-                        <i className="icon-wrench" />
+                        <i className="icon-basket-loaded" />
                       </a>
                     </Link>
-                  ) : product.stock && product.stock > 0 ? (
-                    <button
-                      onClick={() => addToCart(product, addToast)}
-                      disabled={
-                        cartItem !== undefined &&
-                        cartItem.quantity >= cartItem.stock
-                      }
-                      className={cartItem !== undefined ? "active" : ""}
-                    >
-                      <i className="icon-basket-loaded" />
-                    </button>
-                  ) : (
-                    <button disabled>
-                      <i className="icon-basket-loaded" />
-                    </button>
-                  )}
-                </li>
-                <li>
-                  <button
-                    onClick={
-                      compareItem !== undefined
-                        ? () => deleteFromCompare(product, addToast)
-                        : () => addToCompare(product, addToast)
-                    }
-                    className={compareItem !== undefined ? "active" : ""}
-                  >
-                    <i className="icon-shuffle" />
-                  </button>
                 </li>
                 <li>
                   <button
@@ -172,6 +148,7 @@ const ProductGridFive = ({
         addtocompare={addToCompare}
         deletefromcompare={deleteFromCompare}
         addtoast={addToast}
+        imagesSrc={imagesSrc}
       />
     </Fragment>
   );

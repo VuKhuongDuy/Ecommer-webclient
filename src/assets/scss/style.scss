@@ -56,3 +56,13 @@
 @import "pages/contact";
 @import "pages/blog";
 @import "pages/shop";
+
+.product-grid__image a,
+.product-grid__image img {
+  width: 100%;
+}
+
+.product-grid__image img{
+  height: 200px;
+  object-fit: cover;
+}
