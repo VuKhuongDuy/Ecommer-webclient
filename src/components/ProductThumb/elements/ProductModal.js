@@ -28,7 +28,7 @@ const ProductModal = (props) => {
     addtocompare,
     deletefromcompare,
     addtoast,
-    imagesSrc
+    imagesSrc= []
   } = props;
 
   const initSelectedProperties = Array(product.properties?.length ?? 0).fill(0)
