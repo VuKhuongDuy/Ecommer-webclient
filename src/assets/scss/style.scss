@@ -58,11 +58,104 @@
 @import "pages/shop";
 
 .product-grid__image a,
-.product-grid__image img {
+.product-grid__image img,
+.product-grid__image video {
   width: 100%;
 }
 
-.product-grid__image img{
+.product-grid__image img,
+.product-grid__image video {
   height: 200px;
-  object-fit: cover;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .shop-content {
+    .product-list {
+      .product-list__image{
+        img, video{
+          width: 400px;
+          height: 400px;
+          object-fit: cover;
+        }
+      }
+      .product-description {
+        max-height: 100px;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .shop-content {
+    .product-list {
+      .product-list__image{
+        img, video{
+          width: 400px;
+          height: 400px;
+        }
+      }
+      .product-description {
+        max-height: 100px;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .shop-content {
+    .product-list {
+      .product-list__image{
+        img, video{
+          width: 400px;
+          height: 400px;
+        }
+      }
+      .product-description {
+        max-height: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .shop-content {
+    .product-list {
+      .product-list__image{
+        img, video{
+          width: 280px;
+          height: 280px;
+        }
+      }
+      .product-description {
+        max-height: 100px;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .shop-content {
+    .product-list {
+      .product-list__image{
+        img, video{
+          width: 280px;
+          height: 280px;
+        }
+      }
+      .product-description {
+        max-height: 100px;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 }

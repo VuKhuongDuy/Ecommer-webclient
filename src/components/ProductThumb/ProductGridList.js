@@ -4,6 +4,8 @@ import { Col } from "react-bootstrap";
 import ProductModal from "./elements/ProductModal";
 import { ProductRating } from "../Product";
 import { getPercentDiscount } from '../../lib/product';
+import { useEffect } from "react";
+import { getMinioUrl } from "../../common/helper";
 
 const ProductGridList = ({
   product,
@@ -40,11 +42,16 @@ const ProductGridList = ({
               href={`/product/[slug]?slug=${product.slug}`}
               as={"/product/" + product.slug}
             >
-              <a>
-                <img
-                  src={colorImage ? colorImage : product.thumb_image[0].url}
+              <a>{
+                  product.thumb_image?.[0] && (product.thumb_image[0].type === "image" ? (<img
+                  src={colorImage ? colorImage : getMinioUrl(product.thumb_image[0].url)}
                   alt="product_img1"
-                />
+                />) : (<video controls>
+                  <source src={colorImage ? colorImage : getMinioUrl(product.thumb_image[0].url)}/>
+
+                </video>))
+                }
+                
               </a>
             </Link>
             <div className="product-grid__badge-wrapper">
@@ -183,10 +190,15 @@ const ProductGridList = ({
               as={"/product/" + product.slug}
             >
               <a>
-                <img
-                  src={colorImage ? colorImage : product.thumb_image[0].url}
+                {
+                  product.thumb_image?.[0] && (product.thumb_image[0].type === "image" ? (<img
+                  src={colorImage ? colorImage : getMinioUrl(product.thumb_image?.[0].url)}
                   alt="product_img1"
-                />
+                />) : (<video controls>
+                  <source src={colorImage ? colorImage : getMinioUrl(product.thumb_image?.[0].url)}/>
+
+                </video>))
+                }
               </a>
             </Link>
             <div className="product-grid__badge-wrapper">
@@ -230,7 +242,8 @@ const ProductGridList = ({
               </div> */}
             </div>
             <div className="product-description">
-              {product.shortDescription}
+              {product.description}
+              
             </div>
             {product.variation ? (
               <div className="product-switch-wrap">
