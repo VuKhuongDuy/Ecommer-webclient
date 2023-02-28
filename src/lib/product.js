@@ -1,3 +1,5 @@
+import { discountService } from "../api-services/discount.service";
+
 // get products
 export const getProducts = (products, category, type, limit) => {
   const finalProducts = category
@@ -327,18 +329,58 @@ export const getIndividualCategories = (products) => {
   return categories;
 }
 
-export const compareProperties = (propertiesFirst, propertiesSecond) => {
+export const compareProperties = (propertiesFirst = [], propertiesSecond = []) => {
   const arr1 = Object.keys(propertiesFirst);
   const arr2 = Object.keys(propertiesSecond);
+
   if(arr1.length != arr2.length) {
     return false;
   }
 
-  for(let i = 0; i < arr1.length; i++) {
-    if(propertiesFirst[arr1[i]] != propertiesSecond[arr1[i]]) {
-      return false;
-    }
+  for (const {key, value} of propertiesFirst){
+    const value2 = propertiesSecond.find(prop => prop.key === key).value
+    if(value2 && value2 !== value) return false
   }
 
   return true;
+}
+
+export const calculateVoucher = (voucher, cartItems) => {
+  if(!voucher) return 0;
+  const total = cartItems.reduce((pre, product) => {
+    const discountedPrice = getDiscountPrice(
+      product.selling_price,
+      product.discount
+    ).toFixed(2);
+    return pre + discountedPrice * product.cartQuantity
+  },0)
+
+  let totalVoucher = 0;
+
+  if(voucher.listproduct.length === 0) {
+    console.log("11111")
+    if(voucher.default_value) totalVoucher = voucher.default_value
+    if(voucher.default_percent) totalVoucher = total * voucher.default_percent / 100;
+    if(voucher.max_value && totalVoucher > voucher.max_value) totalVoucher = voucher.max_value
+  }else{
+    console.log("2222")
+
+    totalVoucher = voucher.listproduct.reduce((pre, product) => {
+      const cartProduct = cartItems.find(p => p.id === product.id)
+      
+      if(!cartProduct){
+        return pre
+      } else if(product.price !== undefined) {
+        return pre + cartProduct.selling_price - product.price
+      } else if (product.percent)  {
+        return pre + cartProduct.selling_price * product.percent / 100 
+      } else{ 
+        return pre
+      }
+    }, 0)
+
+  }
+  if(totalVoucher > voucher.max_value) totalVoucher = voucher.max_value
+  return totalVoucher
+  
 }

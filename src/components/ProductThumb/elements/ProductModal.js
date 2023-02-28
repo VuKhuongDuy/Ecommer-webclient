@@ -31,10 +31,13 @@ const ProductModal = (props) => {
     imagesSrc= []
   } = props;
 
-  const initSelectedProperties = Array(product.properties?.length ?? 0).fill(0)
-
+  // const initSelectedProperties = Array(product.properties?.length ?? 0).fill(0)
+  const initProductProperties = product.properties.reduce((pre, cur) => {
+    pre.set(cur.name, cur.value[0])
+    return pre;
+  }, new Map())
   const [rerender, setRerender] = useState(false);
-  const [selectedProperties, setSelectedProperties] = useState(initSelectedProperties);
+  const [selectedProperties, setSelectedProperties] = useState(initProductProperties);
 
   // const [selectedProductSize, setSelectedProductSize] = useState(
   //   product.variation ? product.variation[0].size[0].name : ""
@@ -54,17 +57,19 @@ const ProductModal = (props) => {
   const [gallerySwiper, getGallerySwiper] = useState(null);
   const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
 
-  const setSelectedProductType = (index1, index2) => {
+  const setSelectedProductType = (property, value) => {
     const tmp = selectedProperties;
-    tmp[index1] = index2;
+    tmp.set(property, value)
     setSelectedProperties(tmp);
     setRerender(!rerender);
   };
 
-  const checkPropertySelect = (index, i) => {
-    if (selectedProperties[index] === i) {
+  const checkPropertySelect = (propertyName, index, value) => {
+    if (!selectedProperties.get(propertyName) && index === 0) {
       return "checked";
-    } 
+    } else if (selectedProperties.get(propertyName) === value) {
+      return "checked";
+    }
     return "";
   };
 
@@ -205,15 +210,12 @@ const ProductModal = (props) => {
                               <input
                                 type="radio"
                                 value={single}
-                                checked={checkPropertySelect(
-                                  index,
-                                  i,
-                                )}
+                                checked={checkPropertySelect(property.name, i, single)}
                                 id={single}
                                 onChange={() => {
-                                  setSelectedProductType(index, i);
-                                  // setProductStock(single.stock);
-                                  setQuantityCount(1);
+                                  setSelectedProductType(property.name, single);
+                                // setProductStock(single.stock);
+                                setQuantityCount(1);
                                 }}
                               />
                               <label htmlFor={single}>{single}</label>

@@ -5,7 +5,8 @@ import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery";
 const ImageGalleryBottomThumb = ({ product }) => {
   const [gallerySwiper, getGallerySwiper] = useState(null);
   const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
-console.log({product})
+
+  const domainImage = process.env.NEXT_PUBLIC_MINIO_MEDIA_HOST
   // effect for swiper slider synchronize
   useEffect(() => {
     if (
@@ -23,7 +24,7 @@ console.log({product})
   const gallerySwiperParams = {
     getSwiper: getGallerySwiper,
     spaceBetween: 10,
-    loopedSlides: 3,
+    loopedSlides: product.images.length,
     loop: true,
     effect: "creative"
   };
@@ -32,7 +33,7 @@ console.log({product})
     getSwiper: getThumbnailSwiper,
     spaceBetween: 10,
     slidesPerView: product.images && product.images.length >= 2 ? product.images.length : 2,
-    loopedSlides: 3,
+    loopedSlides: product.images && product.images.length >= 2 ? product.images.length : 2,
     touchRatio: 0.2,
     freeMode: true,
     loop: true,
@@ -53,8 +54,15 @@ console.log({product})
                         <i className="icon-magnifier-add" />
                       </button>
                     </LightgalleryItem>
-                    <div className="single-image">
-                      <img src={single.url} className="img-fluid" alt="" />
+                    <div className="single-image">{
+                      single.type !== "video" ? (
+                        <img src={domainImage + single.url} className="img-fluid" alt="" />
+                      ) : (
+                        <video controls>
+                          <source src={domainImage + single.url}></source>
+                        </video>
+                      )
+                    }
                     </div>
                   </div>
                 );
@@ -69,7 +77,15 @@ console.log({product})
               return (
                 <div key={i}>
                   <div className="single-image">
-                    <img src={image.url} className="img-fluid" alt="" />
+                    {
+                      image.type !== "video" ? (
+                        <img src={domainImage + image.url} className="img-fluid" alt="" />
+                      ) : (
+                        <video>
+                          <source src={domainImage + image.url}></source>
+                        </video>
+                      )
+                    }
                   </div>
                 </div>
               );

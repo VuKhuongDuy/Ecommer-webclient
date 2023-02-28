@@ -2,7 +2,6 @@ import axiosInstance from "./axios-instance"
 
 export const productService = {
   get: async (q = '', limit = 1000, offset = 1, categoryId) => {
-    console.log('fetch product data')
     return axiosInstance.get(`/product?q=${q}&limit=${limit}&offset=${offset}&category=${categoryId}`);
   },
 

@@ -9,7 +9,7 @@ import {
   setActiveSort,
 } from "../../lib/product";
 
-const Sidebar = ({ banner, products, viewCategory }) => {
+const Sidebar = ({ banner, products, viewCategory, category }) => {
   const categories = getIndividualCategories(products);
   const colors = getIndividualColors(products);
   const sizes = getProductsIndividualSizes(products);

@@ -5,6 +5,7 @@ import { useToasts } from "react-toast-notifications";
 import { IoIosClose } from "react-icons/io";
 import { getDiscountPrice } from "../../../lib/product";
 import { deleteFromCart } from "../../../redux/actions/cartActions";
+const domainImage = process.env.NEXT_PUBLIC_MINIO_MEDIA_HOST
 
 const MiniCart = ({ cartItems, deleteFromCart }) => {
   let cartTotalPrice = 0;
@@ -19,7 +20,7 @@ const MiniCart = ({ cartItems, deleteFromCart }) => {
                 product.selling_price,
                 product.discount
               ).toFixed(2);
-              cartTotalPrice += discountedPrice * product.quantity;
+              cartTotalPrice += discountedPrice * product.cartQuantity;
               return (
                 <li key={key}>
                   <button
@@ -35,7 +36,7 @@ const MiniCart = ({ cartItems, deleteFromCart }) => {
                         as={"/product/" + product.slug}
                       >
                         <a>
-                          <img src={product.thumb_image[0].url} alt="cart_thumb1" />
+                          <img src={domainImage + product.thumb_image[0].url} alt="cart_thumb1" />
                         </a>
                       </Link>
                     </div>
@@ -48,7 +49,7 @@ const MiniCart = ({ cartItems, deleteFromCart }) => {
                       </Link>
                       <span className="cart-quantity">
                         {" "}
-                        {product.quantity} x{" "}
+                        {product.cartQuantity} x{" "}
                         <span className="cart-amount">
                           {" "}
                           <span className="price-symbol">$</span>

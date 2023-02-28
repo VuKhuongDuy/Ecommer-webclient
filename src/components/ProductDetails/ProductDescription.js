@@ -22,8 +22,13 @@ const ProductDescription = ({
   addToCart,
   productContentButtonStyleClass,
 }) => {
+  const initProductProperties = product.properties.reduce((pre, cur) => {
+    pre.set(cur.name, cur.value[0])
+    return pre;
+  }, new Map())
+
   const [rerender, setRerender] = useState(false);
-  const [selectedProperties, setSelectedProperties] = useState([]);
+  const [selectedProperties, setSelectedProperties] = useState(initProductProperties);
   const [selectedProductColor, setSelectedProductColor] = useState(
     product.variation ? product.variation[0].color : ""
   );
@@ -44,15 +49,15 @@ const ProductDescription = ({
 
   const setSelectedProductType = (property, value) => {
     const tmp = selectedProperties;
-    tmp[property] = value;
+    tmp.set(property, value)
     setSelectedProperties(tmp);
     setRerender(!rerender);
   };
 
   const checkPropertySelect = (propertyName, index, value) => {
-    if (!selectedProperties[propertyName] && index === 0) {
+    if (!selectedProperties.get(propertyName) && index === 0) {
       return "checked";
-    } else if (selectedProperties[propertyName] === value) {
+    } else if (selectedProperties.get(propertyName) === value) {
       return "checked";
     }
     return "";
@@ -120,7 +125,7 @@ const ProductDescription = ({
                     <Fragment key={i}>
                       <input
                         type="radio"
-                        value={`${property.name}: ${single}`}
+                        value={single}
                         checked={checkPropertySelect(property.name, i, single)}
                         id={single}
                         onChange={() => {
@@ -248,7 +253,7 @@ const ProductDescription = ({
                 <button
                   onClick={() =>
                     setQuantityCount(
-                      quantityCount < product.quantity - product.sale_count
+                      quantityCount < product.quantity
                         ? quantityCount + 1
                         : quantityCount
                     )
@@ -259,15 +264,15 @@ const ProductDescription = ({
                 </button>
               </div>
             </div>
-            {product.quantity > product.sale_count ? (
+            {product.quantity > 0 ? (
               <button
-                onClick={() =>
+                onClick={() =>{
                   addToCart(
                     product,
                     addToast,
                     quantityCount,
                     selectedProperties,
-                  )
+                  )}
                 }
                 // disabled={product.quantity >= product.sale_count}
                 className="btn btn-fill-out btn-addtocart space-ml--10"

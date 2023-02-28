@@ -110,6 +110,19 @@ const ProductLeftSidebar = ({
                     productContentButtonStyleClass="product-content__button-wrapper--style-two"
                   />
                 </Col>
+                <div className="pagination pagination-style pagination-style--two justify-content-center">
+                <Paginator
+                  totalRecords={sortedProducts.length}
+                  pageLimit={pageLimit}
+                  pageNeighbours={2}
+                  setOffset={setOffset}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  pageContainerClass="mb-0 mt-0"
+                  pagePrevText="«"
+                  pageNextText="»"
+                />
+              </div>
               </Row>
               <Row>
                 <Col>

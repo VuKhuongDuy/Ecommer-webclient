@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Container, Row, Col } from "react-bootstrap";
 import Paginator from "react-hooks-paginator";
+
 import { LayoutOne } from "../../layouts";
 import { BreadcrumbOne } from "../../components/Breadcrumb";
 import { Sidebar, ShopHeader, ShopProducts } from "../../components/Shop";
-import { productService, bannerService, categoryService } from '../../api-services/';
-import { useRouter } from "next/router";
+import { productService, bannerService } from '../../api-services/';
 
-const ListLeftSidebar = ({ _products, bannerProduct, _productTotal, category }) => {
+const ListLeftSidebar = ({ products, bannerProduct }) => {
   const [layout, setLayout] = useState("list");
   const [sortType, setSortType] = useState("");
   const [sortValue, setSortValue] = useState("");
@@ -16,14 +16,12 @@ const ListLeftSidebar = ({ _products, bannerProduct, _productTotal, category }) 
   const [filterSortValue, setFilterSortValue] = useState("");
   const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentData, setCurrentData] = useState([]);
+  const [currentData, setCurrentData] = useState(products);
   const [sortedProducts, setSortedProducts] = useState([]);
-  const [shopTopFilterStatus, setShopTopFilterStatus] = useState(false);
   const [categoryViewing, setCategoryViewing] = useState(null);
-  const [productTotal, setProductTotal] = useState(_productTotal)
-  const router = useRouter()
-  const {q = "", slug = ""} = router.query;
-  
+  const [shopTopFilterStatus, setShopTopFilterStatus] = useState(false);
+  const pageLimit = 12;
+
   const getLayout = (layout) => {
     setLayout(layout);
   };
@@ -52,22 +50,17 @@ const ListLeftSidebar = ({ _products, bannerProduct, _productTotal, category }) 
     // sortedProducts = filterSortedProducts;
     // setSortedProducts(sortedProducts);
     // setCurrentData(sortedProducts.slice(offset, offset + pageLimit));
-  }, [offset, _products, sortType, sortValue, filterSortType, filterSortValue]);
+  }, [offset, products, sortType, sortValue, filterSortType, filterSortValue]);
 
   useEffect(() => {
     let arr = [];
     if(!categoryViewing) {
-      arr = _products;
+      arr = products;
     } else {
-      arr = _products.filter(m => m.category.id === categoryViewing.id);
+      arr = products.filter(m => m.category.id === categoryViewing.id);
     }
     setCurrentData(arr);
   }, [categoryViewing]);
-
-  useEffect(async () => {
-    const productResponse = await productService.get(q, 10, currentPage, slug);
-    setCurrentData(productResponse.data.data)
-  }, [currentPage])
 
   return (
     <LayoutOne>
@@ -100,8 +93,8 @@ const ListLeftSidebar = ({ _products, bannerProduct, _productTotal, category }) 
               {/* shop product pagination */}
               <div className="pagination pagination-style pagination-style--two justify-content-center">
                 <Paginator
-                  totalRecords={productTotal}
-                  pageLimit={10}
+                  totalRecords={sortedProducts.length}
+                  pageLimit={pageLimit}
                   pageNeighbours={2}
                   setOffset={setOffset}
                   currentPage={currentPage}
@@ -114,7 +107,7 @@ const ListLeftSidebar = ({ _products, bannerProduct, _productTotal, category }) 
             </Col>
             <Col lg={3} className="order-lg-first mt-4 pt-2 mt-lg-0 pt-lg-0">
               {/* sidebar */}
-              <Sidebar banner={bannerProduct} products={_products} viewCategory={viewCategory} category={category}/>
+              <Sidebar banner={bannerProduct} products={products} viewCategory={viewCategory} />
             </Col>
           </Row>
         </Container>
@@ -123,27 +116,22 @@ const ListLeftSidebar = ({ _products, bannerProduct, _productTotal, category }) 
   );
 };
 
+// const mapStateToProps = (state) => {
+//   return {
+//     products: state.productData
+//   };
+// };
+
 export async function getServerSideProps({query}) {
-  const {q, slug} = query;
-  const category = await categoryService.getBySlug(slug);
-  const products = await productService.get(q, 10, 1, slug);
+  const {q, category} = query;
+  const products = await productService.get(q, 10, 1, category);
   const bannerProduct = await bannerService.getBannerProductSidebar();
-  if(!category.data){
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
   return {
     props: {
-      _products: products.data.data || [],
-      _productTotal: products.data.total,
-      category: category.data,
-      bannerProduct: bannerProduct || [],
+      products: products.data.data || [],
+      bannerProduct: bannerProduct.data || [],
     },
-  };
-};
+  }
+}
 
 export default ListLeftSidebar;

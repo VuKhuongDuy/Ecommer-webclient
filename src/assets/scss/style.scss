@@ -59,13 +59,19 @@
 
 .product-grid__image a,
 .product-grid__image img,
-.product-grid__image video {
+.product-grid__image video,
+.product-large-image-wrapper img,
+.product-large-image-wrapper video,
+.product-small-image-wrapper img,
+.product-small-image-wrapper video{
   width: 100%;
 }
 
 .product-grid__image img,
 .product-grid__image video {
   height: 200px;
+  object-fit: cover;
+  object-position: 0 0;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -85,6 +91,18 @@
       }
     }
   }
+  .product-large-image-wrapper img,
+  .product-large-image-wrapper video {
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .product-small-image-wrapper img,
+  .product-small-image-wrapper video {
+    height: 50px;
+    object-fit: cover;
+  }
+  
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -102,6 +120,18 @@
         text-overflow: ellipsis;
       }
     }
+  }
+
+  .product-large-image-wrapper img,
+  .product-large-image-wrapper video {
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .product-small-image-wrapper img,
+  .product-small-image-wrapper video {
+    height: 150px;
+    object-fit: cover;
   }
 }
 
@@ -122,6 +152,19 @@
       }
     }
   }
+
+  .product-large-image-wrapper img,
+  .product-large-image-wrapper video {
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .product-small-image-wrapper img,
+  .product-small-image-wrapper video {
+    height: 80px;
+    object-fit: cover;
+  }
+  
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -140,6 +183,18 @@
       }
     }
   }
+
+  .product-large-image-wrapper img,
+  .product-large-image-wrapper video {
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .product-small-image-wrapper img,
+  .product-small-image-wrapper video {
+    height: 80px;
+    object-fit: cover;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -157,5 +212,17 @@
         text-overflow: ellipsis;
       }
     }
+  }
+
+  .product-large-image-wrapper img,
+  .product-large-image-wrapper video {
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .product-small-image-wrapper img,
+  .product-small-image-wrapper video {
+    height: 90px;
+    object-fit: cover;
   }
 }
