@@ -8,18 +8,31 @@ export const addToCart = (
   item,
   addToast,
   quantityCount,
-  selectedProperties,
+  selectedProperties = new Map(),
 ) => {
+  if(item.selectedProperties && Object.keys(item.selectedProperties).length){
+    selectedProperties = item.selectedProperties.reduce((pre,cur) => {
+      pre.set(cur.key, cur.value)
+      return pre
+    }, new Map())
+  }
+
   return dispatch => {
     if (addToast) {
       addToast("Added To Cart", { appearance: "success", autoDismiss: true });
     }
+    const arrayProp = [...selectedProperties.keys()].map(key => {
+      return {
+        key,
+        value: selectedProperties.get(key)
+      }
+    })
     dispatch({
       type: ADD_TO_CART,
       payload: {
         ...item,
         cartQuantity: quantityCount,
-        selectedProperties: selectedProperties
+        selectedProperties: arrayProp
       }
     });
   };

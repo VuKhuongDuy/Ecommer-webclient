@@ -49,7 +49,7 @@ const CategorySliderOne = ({ title, text, url, categorySliderData }) => {
                   <div className="text-center text-md-left mb-4 mb-md-0">
                     <h4>{title}</h4>
                     <p className="mb-2">{text}</p>
-                    <Link href={url}>
+                    <Link href={url ?? ""}>
                       <a className="btn btn-line-fill btn-sm">View All</a>
                     </Link>
                   </div>
@@ -61,7 +61,7 @@ const CategorySliderOne = ({ title, text, url, categorySliderData }) => {
                         return (
                           <div className="item" key={key}>
                             <div className="categories-box">
-                              <Link href={single.url}>
+                              <Link href={single.url ?? ""}>
                                 <a>
                                   <i className={single.iconClass} />
                                   <span>{single.title}</span>

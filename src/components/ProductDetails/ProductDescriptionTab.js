@@ -13,14 +13,14 @@ const ProductDescriptionTab = ({ product }) => {
           <Nav.Item>
             <Nav.Link eventKey="description">DESCRIPTION</Nav.Link>
           </Nav.Item>
-          <Nav.Item>
+          {/* <Nav.Item>
             <Nav.Link eventKey="additionalInfo">ADDITIONAL INFO</Nav.Link>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="reviews">
               REVIEWS {product.ratingCount ? `(${product.ratingCount})` : ""}
             </Nav.Link>
-          </Nav.Item>
+          </Nav.Item> */}
         </Nav>
         <Tab.Content>
           <Tab.Pane eventKey="description">
@@ -28,7 +28,7 @@ const ProductDescriptionTab = ({ product }) => {
               {product.description}
             </div>
           </Tab.Pane>
-          <Tab.Pane eventKey="additionalInfo">
+          {/* <Tab.Pane eventKey="additionalInfo">
             <div className="product-description-tab__additional-info">
               <table className="table table-bordered">
                 <tbody>
@@ -51,7 +51,7 @@ const ProductDescriptionTab = ({ product }) => {
                 </tbody>
               </table>
             </div>
-          </Tab.Pane>
+          </Tab.Pane> */}
           {/* <Tab.Pane eventKey="reviews">
             <div className="product-description-tab__review">
               <div className="comments">

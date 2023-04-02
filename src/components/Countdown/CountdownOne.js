@@ -20,7 +20,7 @@ const CountdownOne = ({ title, subtitle, backgroundImage, dateTime, url }) => {
               <div className="countdown-two space-mb--20">
                 <Countdown date={new Date(dateTime)} renderer={RendererTwo} />
               </div>
-              <Link href={url}>
+              <Link href={url ?? ""}>
                 <a className="btn btn-fill-out">Shop Now</a>
               </Link>
             </div>

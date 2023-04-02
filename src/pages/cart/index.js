@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useMemo } from "react";
 import Link from "next/link";
 import { connect } from "react-redux";
 import { useToasts } from "react-toast-notifications";
@@ -9,11 +9,12 @@ import {
   deleteAllFromCart,
   cartItemStock
 } from "../../redux/actions/cartActions";
-import { getDiscountPrice } from "../../lib/product";
+import { calculateVoucher, getDiscountPrice } from "../../lib/product";
 import { Container, Row, Col } from "react-bootstrap";
 import { LayoutOne } from "../../layouts";
 import { BreadcrumbOne } from "../../components/Breadcrumb";
 import { IoIosClose } from "react-icons/io";
+import { discountService } from "../../api-services/discount.service";
 
 const Cart = ({
   cartItems,
@@ -24,7 +25,35 @@ const Cart = ({
 }) => {
   const [quantityCount] = useState(1);
   const { addToast } = useToasts();
-  let cartTotalPrice = 0;
+  const [ voucherCode, setVoucherCode ] = useState("")
+  const [ voucher, setVoucher ] = useState()
+  const cartTotalPrice = useMemo(() => cartItems.reduce((pre, product) => {
+    const discountedPrice = getDiscountPrice(
+      product.selling_price,
+      product.discount
+    ).toFixed(2);
+    return pre + discountedPrice * product.cartQuantity
+  }, 0), [cartItems])
+
+  const cartTotalVoucher = useMemo(() => {
+    return calculateVoucher(voucher, cartItems)
+    console.log("totalVoucher", calculateVoucher(voucher, cartItems)) 
+  }, [voucher, cartItems])
+
+  const domainImage = process.env.NEXT_PUBLIC_MINIO_MEDIA_HOST
+
+  const applyVoucher = async (voucherCode) => {
+    const voucher = await discountService.getVoucher(voucherCode)
+    if(!voucher){
+      addToast("Cannot find voucher", {
+        appearance: "error",
+        autoDismiss: true
+      });
+    }else{
+      setVoucher(voucher)
+    }
+  }
+
   return (
     <LayoutOne>
       {/* breadcrumb */}
@@ -64,7 +93,6 @@ const Cart = ({
                             product.discount
                           ).toFixed(2);
 
-                          cartTotalPrice += discountedPrice * product.quantity;
                           return (
                             <tr key={key}>
                               <td className="product-thumbnail">
@@ -74,7 +102,7 @@ const Cart = ({
                                 >
                                   <a>
                                     <img
-                                      src={product.thumb_image[0].url}
+                                      src={domainImage + product.thumb_image[0].url}
                                       alt="product1"
                                     />
                                   </a>
@@ -87,14 +115,12 @@ const Cart = ({
                                 >
                                   <a>{product.name}</a>
                                 </Link>
-                                {product.selectedProductColor &&
-                                product.selectedProductSize ? (
-                                  <div className="cart-variation">
-                                    <p>Color: {product.selectedProductColor}</p>
-                                    <p>Size: {product.selectedProductSize}</p>
+                                {product.selectedProperties && product.selectedProperties.map(
+                                  prop => (
+                                    <div className="cart-variation" key={key+prop.key}>
+                                    <p>{prop.key}: {prop.value}</p>
                                   </div>
-                                ) : (
-                                  ""
+                                  )
                                 )}
                               </td>
                               <td className="product-price" data-title="Price">
@@ -116,21 +142,21 @@ const Cart = ({
                                   <input
                                     className="cart-plus-minus-box"
                                     type="text"
-                                    value={product.quantity}
+                                    value={product.cartQuantity}
                                     readOnly
                                   />
                                   <button
-                                    onClick={() =>
+                                    onClick={() => {
                                       addToCart(
                                         product,
                                         addToast,
                                         quantityCount
                                       )
-                                    }
+                                    }}
                                     disabled={
                                       product !== undefined &&
                                       product.quantity &&
-                                      product.quantity >= cartItems.quantity
+                                      product.quantity <= cartItems.cartQuantity
                                         // cartItemStock(
                                         //   product,
                                         //   product.selectedProductColor,
@@ -148,7 +174,7 @@ const Cart = ({
                                 data-title="Total"
                               >
                                 $
-                                {(discountedPrice * product.quantity).toFixed(
+                                {(discountedPrice * product.cartQuantity).toFixed(
                                   2
                                 )}
                               </td>
@@ -175,11 +201,17 @@ const Cart = ({
                                     type="text"
                                     className="form-control form-control-sm"
                                     placeholder="Enter Coupon Code.."
+                                    onKeyUp={(event) => {
+                                      setVoucherCode(event.target.value)
+                                    }}
                                   />
                                   <div className="input-group-append">
                                     <button
                                       className="btn btn-fill-out btn-sm"
                                       type="submit"
+                                      onClick={(event) => {
+                                        applyVoucher(voucherCode)
+                                      }}
                                     >
                                       Apply Coupon
                                     </button>
@@ -286,9 +318,13 @@ const Cart = ({
                             <td className="cart-total-amount">Free Shipping</td>
                           </tr>
                           <tr>
+                            <td className="cart-total-label">Voucher</td>
+                            <td className="cart-total-amount">- ${cartTotalVoucher}</td>
+                          </tr>
+                          <tr>
                             <td className="cart-total-label">Total</td>
                             <td className="cart-total-amount">
-                              <strong>${cartTotalPrice.toFixed(2)}</strong>
+                              <strong>${(cartTotalPrice-cartTotalVoucher).toFixed(2)}</strong>
                             </td>
                           </tr>
                         </tbody>

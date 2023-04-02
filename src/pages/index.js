@@ -18,29 +18,17 @@ const ElectronicsTwo = ({
   flashSaleProducts,
   dealOfTheDayProducts,
   carouselProducts,
-  banner1,
-  banner2,
+  homebanner,
+  centerbanner,
   slides,
   posts,
 }) => {
-  console.log({categories})
-  console.log({newProducts})
-  console.log({featuredProducts})
-  console.log({bestSellerProducts})
-  console.log({flashSaleProducts})
-  console.log({dealOfTheDayProducts})
-  console.log({carouselProducts})
-  console.log({banner1})
-  console.log({banner2})
-  console.log({slides})
-  console.log({posts})
-
   return (
     <LayoutSix navPositionClass="justify-content-start" categories={categories}>
       {/* hero slider */}
       <HeroSliderSix heroSliderData={slides}/>
       {/* banner */}
-      <BannerFive banner={banner1} />
+      <BannerFive banner={homebanner} />
       {/* category slider */}
       <CategorySliderTwo categorySliderData={categoriesSlide} />
       
@@ -49,7 +37,7 @@ const ElectronicsTwo = ({
         products={flashSaleProducts}
       />
       {/* banner */}
-      <BannerSix banner={banner2} />
+      <BannerSix banner={centerbanner} />
       {/* tab product */}
       {/* <ProductTabFour
         title="Best Seller Products"
@@ -106,8 +94,8 @@ export async function getServerSideProps() {
   const flashSaleProducts = await productService.getFlashSale();
   const dealOfTheDayProducts = await productService.getDealOfTheDay();
   const carouselProducts = await productService.getCarousel();
-  const banner1 = await bannerService.getHomeBanner1();
-  const banner2 = await bannerService.getHomeBanner2();
+  const homebanner = await bannerService.getHomeBanner();
+  const centerbanner = await bannerService.getHomeCenter();
   const slides = await bannerService.getBannerSlide();
   const posts = await postService.getSlidePost();
   return {
@@ -120,9 +108,9 @@ export async function getServerSideProps() {
       flashSaleProducts: flashSaleProducts.data || [],
       dealOfTheDayProducts: dealOfTheDayProducts.data || [],
       carouselProducts: carouselProducts.data || [],
-      banner1: banner1.data || [],
-      banner2: banner2.data || [],
-      slides: slides.data || [],
+      homebanner: homebanner || [],
+      centerbanner: centerbanner || [],
+      slides: slides || [],
       posts: posts.data || [],
     },
   }

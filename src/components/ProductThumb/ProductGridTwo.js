@@ -24,6 +24,7 @@ const ProductGridTwo = ({
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [colorImage, setColorImage] = useState("");
+  const domainImage = process.env.NEXT_PUBLIC_MINIO_MEDIA_HOST
 
   return (
     <Fragment>
@@ -40,7 +41,7 @@ const ProductGridTwo = ({
             >
               <a>
                 <img
-                  src={colorImage ? colorImage : product.thumb_image[0].url}
+                  src={colorImage ? colorImage : domainImage + product.thumb_image[0].url}
                   alt="product_img1"
                 />
               </a>

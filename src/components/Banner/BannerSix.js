@@ -8,7 +8,7 @@ const BannerSix = ({ banner }) => {
         <Row>
           <Col lg={12}>
             <div className="sale-banner mb-0">
-              <Link href={banner.redirect_url} key={banner.id}>
+              <Link href={banner.redirect_url ?? ""} key={banner.id}>
                 <a className="hover-effect">
                   <img
                     src={banner.image}

@@ -28,10 +28,17 @@ const ProductModal = (props) => {
     addtocompare,
     deletefromcompare,
     addtoast,
+    imagesSrc= []
   } = props;
 
+  // const initSelectedProperties = Array(product.properties?.length ?? 0).fill(0)
+  const initProductProperties = product.properties.reduce((pre, cur) => {
+    pre.set(cur.name, cur.value[0])
+    return pre;
+  }, new Map())
   const [rerender, setRerender] = useState(false);
-  const [selectedProperties, setSelectedProperties] = useState({});
+  const [selectedProperties, setSelectedProperties] = useState(initProductProperties);
+
   // const [selectedProductSize, setSelectedProductSize] = useState(
   //   product.variation ? product.variation[0].size[0].name : ""
   // );
@@ -52,15 +59,15 @@ const ProductModal = (props) => {
 
   const setSelectedProductType = (property, value) => {
     const tmp = selectedProperties;
-    tmp[property] = value;
+    tmp.set(property, value)
     setSelectedProperties(tmp);
     setRerender(!rerender);
   };
 
   const checkPropertySelect = (propertyName, index, value) => {
-    if (!selectedProperties[propertyName] && index === 0) {
+    if (!selectedProperties.get(propertyName) && index === 0) {
       return "checked";
-    } else if (selectedProperties[propertyName] === value) {
+    } else if (selectedProperties.get(propertyName) === value) {
       return "checked";
     }
     return "";
@@ -113,12 +120,11 @@ const ProductModal = (props) => {
           <Col lg={6}>
             <div className="product-quickview__large-image-wrapper">
               <Swiper {...gallerySwiperParams}>
-                {product.images &&
-                  product.images.map((single, i) => {
+                {imagesSrc.map((src, i) => {
                     return (
                       <div key={i}>
                         <div className="single-image">
-                          <img src={single.url} className="img-fluid" alt="" />
+                          <img src={src} className="img-fluid" alt="" style={{width: "100%"}}/>
                         </div>
                       </div>
                     );
@@ -127,12 +133,11 @@ const ProductModal = (props) => {
             </div>
             <div className="product-quickview__small-image-wrapper">
               <Swiper {...thumbnailSwiperParams}>
-                {product.images &&
-                  product.images.map((image, i) => {
+                {imagesSrc.map((src, i) => {
                     return (
                       <div key={i}>
                         <div className="single-image">
-                          <img src={image.url} className="img-fluid" alt="" />
+                          <img src={src} className="img-fluid" alt="" style={{minHeight: "130px", maxHeight: "130px"}}/>
                         </div>
                       </div>
                     );
@@ -170,7 +175,7 @@ const ProductModal = (props) => {
                   ""
                 )} */}
               </div>
-              <div className="product-quickview__description space-mb--20">
+              <div className="product-quickview__title space-mb--20">
                 <p>{product.title}</p>
               </div>
 
@@ -205,16 +210,12 @@ const ProductModal = (props) => {
                               <input
                                 type="radio"
                                 value={single}
-                                checked={checkPropertySelect(
-                                  property.name,
-                                  i,
-                                  single
-                                )}
+                                checked={checkPropertySelect(property.name, i, single)}
                                 id={single}
                                 onChange={() => {
                                   setSelectedProductType(property.name, single);
-                                  // setProductStock(single.stock);
-                                  setQuantityCount(1);
+                                // setProductStock(single.stock);
+                                setQuantityCount(1);
                                 }}
                               />
                               <label htmlFor={single}>{single}</label>
@@ -333,7 +334,7 @@ const ProductModal = (props) => {
                           onClick={() =>
                             setQuantityCount(
                               quantityCount <
-                                product.quantity - product.sale_count
+                                product.quantity
                                 ? quantityCount + 1
                                 : quantityCount
                             )
@@ -344,21 +345,17 @@ const ProductModal = (props) => {
                         </button>
                       </div>
                     </div>
-                    {/* {productStock && productStock > 0 ? (
+                    {product.quantity && product.quantity > 0 ? (
                       <button
                         onClick={() =>
-                          // addtocart(
-                          //   product,
-                          //   addtoast,
-                          //   quantityCount,
-                          //   selectedProductColor,
-                          //   selectedProductSize
-                          // )
-                          {
-
-                          }
+                          addtocart(
+                            product,
+                            addtoast,
+                            quantityCount,
+                            selectedProperties
+                          )
                         }
-                        disabled={productCartQty >= productStock}
+                        disabled={quantityCount >= product.quantity}
                         className="btn btn-fill-out btn-addtocart space-ml--10"
                       >
                         <i className="icon-basket-loaded" /> Add To Cart
@@ -370,9 +367,9 @@ const ProductModal = (props) => {
                       >
                         Out of Stock
                       </button>
-                    )} */}
+                    )}
 
-                    <button
+                    {/* <button
                       className={`product-quickview__compare ${
                         compareitem !== undefined ? "active" : ""
                       }`}
@@ -388,7 +385,7 @@ const ProductModal = (props) => {
                       }
                     >
                       <i className="icon-shuffle" />
-                    </button>
+                    </button> */}
 
                     {/* <button
                       className={`product-quickview__wishlist ${
@@ -447,6 +444,9 @@ const ProductModal = (props) => {
                     })}
                 </li> */}
               </ul>
+              <div className="product-quickview__description space-mb--20">
+                <p>{product.description}</p>
+              </div>
               <div className="product-quickview__product-share space-mt--15">
                 <span>Share:</span>
                 <ul className="social-icons">

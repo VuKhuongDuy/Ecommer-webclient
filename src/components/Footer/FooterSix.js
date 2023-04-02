@@ -19,6 +19,8 @@ import {
   FaHeart
 } from "react-icons/fa";
 
+const SHOP_ADDRESS = process.env.NEXT_PUBLIC_SHOP_ADDRESS || "";
+
 const FooterSix = () => {
   const [scroll, setScroll] = useState(0);
   const [top, setTop] = useState(0);
@@ -87,7 +89,7 @@ const FooterSix = () => {
                   <ul className="contact-info">
                     <li>
                       <IoIosPin />
-                      <p>123 Street, Old Trafford, New South London , UK</p>
+                      <p>{ SHOP_ADDRESS }</p>
                     </li>
                     <li>
                       <IoIosMailOpen />
