@@ -41,18 +41,6 @@ const ListLeftSidebar = ({ products, bannerProduct }) => {
   };
 
   useEffect(() => {
-    // let sortedProducts = getSortedProducts(products, sortType, sortValue);
-    // const filterSortedProducts = getSortedProducts(
-    //   sortedProducts,
-    //   filterSortType,
-    //   filterSortValue
-    // );
-    // sortedProducts = filterSortedProducts;
-    // setSortedProducts(sortedProducts);
-    // setCurrentData(sortedProducts.slice(offset, offset + pageLimit));
-  }, [offset, products, sortType, sortValue, filterSortType, filterSortValue]);
-
-  useEffect(() => {
     let arr = [];
     if(!categoryViewing) {
       arr = products;

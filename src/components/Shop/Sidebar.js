@@ -130,9 +130,9 @@ const Sidebar = ({ banner, products, viewCategory, category }) => {
             <img src={banner.image} alt="sidebar_banner_img" />
           </div>
           <div className="shop-bn-content2">
-            <h5 className="text-uppercase shop-subtitle">{banner.title2}</h5>
-            <h3 className="text-uppercase shop-title">{banner.title}</h3>
-            <Link href={banner.redirect_url ?? ""}>
+            <h5 className="text-uppercase shop-subtitle">{banner.title}</h5>
+            <h3 className="text-uppercase shop-title">{banner.title2}</h3>
+            <Link href={banner.redirect_url}>
               <a className="btn btn-white rounded-0 btn-sm text-uppercase">
                 Shop Now
               </a>

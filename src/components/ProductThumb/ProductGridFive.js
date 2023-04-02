@@ -41,33 +41,36 @@ const ProductGridFive = ({
       >
         <div className="product-grid product-grid--style-three">
           <div className="product-grid__image">
-            <Link
-              href={`/product/${product.slug}`}
-              as={"/product/" + product.slug}
-            >
-              <a>
-                {product.thumb_image[0].type === "video" ? (
-                  <video controls>
-                    <source src={imagesSrc[0]} alt="product_img1" />
-                  </video>
-                ) : (
-                  <img src={imagesSrc[0]} alt="product_img1" />
-                )}
-                {product.thumb_image?.[1]?.type === "video"
-                  ? imagesSrc.length > 1 && (
-                      <video controls>
-                        <source src={imagesSrc[1]} alt="product_img1" />
-                      </video>
-                    )
-                  : imagesSrc.length > 1 && (
-                      <img
-                        className="product-hover-image"
-                        src={colorImage ? colorImage : imagesSrc[1]}
-                        alt="product_img1"
-                      />
-                    )}
-              </a>
-            </Link>
+            {
+              product.thumb_image && product.thumb_image.length > 0 &&
+              <Link
+                href={`/product/${product.slug}`}
+                as={"/product/" + product.slug}
+              >
+                <a>
+                  {product.thumb_image[0].type === "video" ? (
+                    <video controls>
+                      <source src={imagesSrc[0]} alt="product_img1" />
+                    </video>
+                  ) : (
+                    <img src={imagesSrc[0]} alt="product_img1" />
+                  )}
+                  {product.thumb_image?.[1]?.type === "video"
+                    ? imagesSrc.length > 1 && (
+                        <video controls>
+                          <source src={imagesSrc[1]} alt="product_img1" />
+                        </video>
+                      )
+                    : imagesSrc.length > 1 && (
+                        <img
+                          className="product-hover-image"
+                          src={colorImage ? colorImage : imagesSrc[1]}
+                          alt="product_img1"
+                        />
+                      )}
+                </a>
+              </Link>
+            }
             <div className="product-grid__badge-wrapper">
               {product.new ? <span className="pr-flash">NEW</span> : ""}
               {product.featured ? (

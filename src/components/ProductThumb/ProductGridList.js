@@ -2,7 +2,6 @@ import { Fragment, useState } from "react";
 import Link from "next/link";
 import { Col } from "react-bootstrap";
 import ProductModal from "./elements/ProductModal";
-import { ProductRating } from "../Product";
 import { getPercentDiscount } from '../../lib/product';
 import { useEffect } from "react";
 import { getMinioUrl } from "../../common/helper";
@@ -24,8 +23,15 @@ const ProductGridList = ({
   cartItems,
   sliderClass
 }) => {
+  const [imagesSrc, setImagesSrc] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [colorImage, setColorImage] = useState("");
+
+  useEffect(async ()=>{
+    setImagesSrc(await Promise.all(product.thumb_image.map(async (img) => {
+      return await getMinioUrl(img.url)
+    })));
+  }, [])
 
   return (
     <Fragment>
@@ -271,7 +277,7 @@ const ProductGridList = ({
                 <li>
                   {product.slug ? (
                     <a
-                      href={product.slug}
+                      href={`/product/${product.slug}`}
                       className="btn btn-fill-out btn-addtocart"
                       target="_blank" rel="noreferrer"
                     >
@@ -353,6 +359,7 @@ const ProductGridList = ({
         cartitem={cartItem}
         wishlistitem={wishlistItem}
         // compareitem={compareItem}
+        imagesSrc={imagesSrc}
         addtocart={addToCart}
         addtowishlist={addToWishlist}
         deletefromwishlist={deleteFromWishlist}

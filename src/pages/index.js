@@ -18,8 +18,8 @@ const ElectronicsTwo = ({
   flashSaleProducts,
   dealOfTheDayProducts,
   carouselProducts,
-  banner1,
-  banner2,
+  homebanner,
+  centerbanner,
   slides,
   posts,
 }) => {
@@ -28,7 +28,7 @@ const ElectronicsTwo = ({
       {/* hero slider */}
       <HeroSliderSix heroSliderData={slides}/>
       {/* banner */}
-      <BannerFive banner={[banner1]} />
+      <BannerFive banner={homebanner} />
       {/* category slider */}
       <CategorySliderTwo categorySliderData={categoriesSlide} />
       
@@ -37,7 +37,7 @@ const ElectronicsTwo = ({
         products={flashSaleProducts}
       />
       {/* banner */}
-      <BannerSix banner={banner2} />
+      <BannerSix banner={centerbanner} />
       {/* tab product */}
       {/* <ProductTabFour
         title="Best Seller Products"
@@ -94,8 +94,8 @@ export async function getServerSideProps() {
   const flashSaleProducts = await productService.getFlashSale();
   const dealOfTheDayProducts = await productService.getDealOfTheDay();
   const carouselProducts = await productService.getCarousel();
-  const banner1 = await bannerService.getHomeBanner1();
-  const banner2 = await bannerService.getHomeBanner2();
+  const homebanner = await bannerService.getHomeBanner();
+  const centerbanner = await bannerService.getHomeCenter();
   const slides = await bannerService.getBannerSlide();
   const posts = await postService.getSlidePost();
   return {
@@ -108,8 +108,8 @@ export async function getServerSideProps() {
       flashSaleProducts: flashSaleProducts.data || [],
       dealOfTheDayProducts: dealOfTheDayProducts.data || [],
       carouselProducts: carouselProducts.data || [],
-      banner1: banner1 || [],
-      banner2: banner2 || [],
+      homebanner: homebanner || [],
+      centerbanner: centerbanner || [],
       slides: slides || [],
       posts: posts.data || [],
     },

@@ -115,7 +115,7 @@ const Cart = ({
                                 >
                                   <a>{product.name}</a>
                                 </Link>
-                                {product.selectedProperties.map(
+                                {product.selectedProperties && product.selectedProperties.map(
                                   prop => (
                                     <div className="cart-variation" key={key+prop.key}>
                                     <p>{prop.key}: {prop.value}</p>

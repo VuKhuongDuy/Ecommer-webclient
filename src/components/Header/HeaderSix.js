@@ -165,21 +165,6 @@ const HeaderSix = ({ cartItems, wishlistItems, navPositionClass, categories }) =
                     </Link>
                   </li>
 
-                  <li className="position-relative">
-                    <Link href="/other/wishlist">
-                      <a className="nav-link mini-cart-trigger pr-3">
-                        <AiOutlineHeart />
-                        {wishlistItems.length > 0 ? (
-                          <span className="cart-count cart-count--mobile">
-                            {wishlistItems.length}
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                      </a>
-                    </Link>
-                  </li>
-
                   <li className="d-none d-lg-block position-relative">
                     <Link href="/cart">
                       <a className="nav-link mini-cart-trigger pr-3 pr-lg-0">

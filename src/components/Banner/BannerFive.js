@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Row, Col } from "react-bootstrap";
+const domainImage = process.env.NEXT_PUBLIC_MINIO_MEDIA_HOST
 
 const BannerFive = ({ containerClass, banner }) => {
   return (
@@ -11,7 +12,7 @@ const BannerFive = ({ containerClass, banner }) => {
               <div className="sale-banner px-0">
                 <Link href={element.redirect_url ?? "/"}>
                   <a className="hover-effect">
-                    <img src={element.image} alt="shop_banner" />
+                    <img src={`${domainImage}/${element.image}`} alt="shop_banner" />
                   </a>
                 </Link>
               </div>

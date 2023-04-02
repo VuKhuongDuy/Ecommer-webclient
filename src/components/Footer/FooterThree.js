@@ -18,6 +18,8 @@ import {
 } from "react-icons/fa";
 import { SubscribeEmailTwo } from "../Newsletter";
 
+const SHOP_ADDRESS = process.env.NEXT_PUBLIC_SHOP_ADDRESS || "";
+
 const FooterThree = () => {
   const [scroll, setScroll] = useState(0);
   const [top, setTop] = useState(0);
@@ -48,7 +50,7 @@ const FooterThree = () => {
                 <ul className="contact-info contact-info-light">
                   <li>
                     <IoIosPin />
-                    <p>123 Street, Old Trafford, New South London , UK</p>
+                    <p>{ SHOP_ADDRESS }</p>
                   </li>
                   <li>
                     <IoIosMailOpen />
